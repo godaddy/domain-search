@@ -1,0 +1,232 @@
+/* ---------------------------------------------------------- */
+/* Page-specific CSS (Not included in the compiled react app) */
+/* ---------------------------------------------------------- */
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: #f5f5f5; }
+
+button {
+  font: inherit;
+  margin: 0; }
+
+*,
+*:before,
+*:after {
+  /* Inherit box-sizing to make it easier to change the property for components that leverage other behavior; see http://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/ */
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit; }
+
+button,
+input[type="button"],
+input[type="submit"] {
+  display: inline-block;
+  border: none;
+  -webkit-border-radius: 3px;
+  border-radius: 3px;
+  background-color: #ff6663;
+  color: #ffffff;
+  line-height: 1;
+  margin-bottom: 0.5em;
+  padding: 0.75em 1em;
+  white-space: nowrap; }
+  button:hover, button:active, button:focus,
+  input[type="button"]:hover,
+  input[type="button"]:active,
+  input[type="button"]:focus,
+  input[type="submit"]:hover,
+  input[type="submit"]:active,
+  input[type="submit"]:focus {
+    cursor: pointer;
+    background-color: rgba(255, 102, 99, 0.8);
+    color: #ffffff; }
+
+a {
+  color: #ff6663;
+  text-decoration: none; }
+  a:visited {
+    color: #ff6663; }
+  a:hover, a:focus, a:active {
+    color: rgba(255, 102, 99, 0.8); }
+  a:hover, a:active, a:focus {
+    outline: 0; }
+
+code {
+  font-size: 14px;
+  color: #ff6663;
+}
+
+ul li {
+  line-height: 2em;
+}
+
+hr {
+  border: 0;
+  height: 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  margin-bottom: 20px;
+}
+
+.header {
+  width: 100%;
+  padding: 10px;
+  color: #ffffff;
+  background: #323232;
+}
+
+.instructions {
+  margin: 20px;
+  color: #554444;
+}
+
+/* ---------------------------------------------------------- */
+/* App-specific CSS                                           */
+/* ---------------------------------------------------------- */
+
+.rstore-message {
+  display: inline-block;
+}
+
+.rstore-message span.dashicons {
+  width: 28px;
+  height: 28px;
+  font-size: 28px;
+}
+
+.rstore-message .rstore-success {
+  color: #41a62a;
+}
+
+.rstore-message .rstore-error {
+  color: #a62b2b;
+}
+
+.rstore-loading {
+  width: 28px;
+  height: 48px;
+  vertical-align: middle;
+  background-image: url('loading.svg');
+  background-size: 28px 28px;
+  background-repeat: no-repeat;
+  display: inline-block;
+}
+
+.rstore-domain-search .input-group {
+  position: relative;
+  display: table;
+  border-collapse: separate;
+}
+
+.rstore-domain-search .input-group .form-control {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.rstore-domain-search .input-group-btn {
+  display: table-cell;
+  width: 1%;
+  white-space: nowrap;
+  vertical-align: middle;
+  position: relative;
+}
+
+.rstore-domain-search .input-group .form-control:first-child,
+.rstore-domain-search .input-group-btn:first-child > .button {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.rstore-domain-search .input-group .form-control:last-child,
+.rstore-domain-search .input-group-btn:last-child > .button {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.rstore-domain-search .form-control {
+  display: block;
+  width: 100%;
+  height: 40px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.428571429;
+  color: #555555;
+  vertical-align: middle;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+  transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+}
+
+.rstore-domain-search .form-control:focus {
+  border-color: #66afe9;
+  outline: 0;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+}
+
+.rstore-domain-search .container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.rstore-domain-search .domain-result {
+  border: 1px solid #e8e8e8;
+  float: left;
+  min-width: 290px;
+  padding: 15px 20px 5px 15px;
+  vertical-align: middle;
+  width: 99%;
+}
+
+.rstore-domain-search .rstore-exact-domain-list .domain-result {
+  margin-bottom: 15px;
+  border: 3px solid #e8e8e8;
+}
+
+.rstore-domain-search .domain-name {
+  display: inline-block;
+  vertical-align: middle;
+  vertical-align: -webkit-baseline-middle;
+  word-break: break-word;
+  padding: 10px 0;
+}
+
+.rstore-domain-search .purchase-info {
+  display: block;
+  float: right;
+}
+
+.rstore-domain-search .pricing {
+  display: inline-block;
+  margin-left: 10px;
+  text-align: right;
+  vertical-align: middle;
+}
+
+.rstore-domain-search .listPrice {
+  margin-right: 7px;
+}
+
+.rstore-domain-search .rstore-domain-buy-button {
+  margin-left: 10px;
+}
+
+.rstore-domain-search .rstore-message {
+  padding: 10px;
+}

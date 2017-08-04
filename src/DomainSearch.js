@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import $ from 'jquery';
 import SearchResults from './SearchResults';
 import ExactDomain from './ExactDomain';
+import util from './util';
+
+const initialState = {
+  domain: null,
+  suggestedDomains: null,
+  searching: false
+};
 
 export default class DomainSearch extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super(...arguments);
+
     this.handleDomainSearch = this.handleDomainSearch.bind(this);
 
-    this.state = {
-      domain: {},
-      suggestedDomains: [],
-      completed: true,
-      searching: false
-    }
+    this.state = initialState;
   };
 
   handleDomainSearch(e) {
@@ -25,30 +27,28 @@ export default class DomainSearch extends Component {
     }
 
     this.setState({
-      completed: false,
       searching: true
     });
 
-    const data = {
-      domain: this.refs.domainSearch.value
-    }
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({ domain: this.refs.domainSearch.value })
+    };
 
-    $.ajax({
-      method: "POST",
-      url: this.props.domainUrl,
-      data,
-      crossDomain: true
-    }).then(response => {
-      this.setState({
-        domain: response.exactMatchDomain,
-        suggestedDomains: response.suggestedDomains,
-        completed: true
+    util.fetch(this.props.domainUrl, options)
+      .then(data => {
+        this.setState({
+          domain: data.exactMatchDomain,
+          suggestedDomains: data.suggestedDomains,
+          searching: false
+        });
+      }).catch(() => {
+        this.setState(initialState);
       });
-    }).catch(() => {
-      this.setState({
-        completed: true
-      });
-    });
   }
 
   render() {
@@ -56,17 +56,16 @@ export default class DomainSearch extends Component {
 
     const {
       searching,
-      completed,
       domain,
       suggestedDomains
     } = this.state;
 
-    if (searching && !completed) {
+    if (searching) {
       content = (
         <div className="rstore-loading"></div>
       );
     }
-    else if (searching && completed) {
+    else if (domain || suggestedDomains) {
       content = (
         <div>
           <ExactDomain domain={domain} cartUrl={this.props.cartUrl} i18n={this.props.i18n} />
@@ -84,7 +83,7 @@ export default class DomainSearch extends Component {
           <div className="input-group">
             <input type="text" ref="domainSearch" className="search-field form-control" placeholder={this.props.i18n.placeholder} />
             <span className="input-group-btn">
-              <button type="submit" className="rstore-domain-search-button submit button">{this.props.i18n.search}</button>
+              <button type="submit" className="rstore-domain-search-button submit button" disabled={searching}>{this.props.i18n.search}</button>
             </span>
           </div>
           <div className="result-content">

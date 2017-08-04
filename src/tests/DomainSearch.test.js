@@ -1,9 +1,9 @@
 import React from 'react';
-import $ from 'jquery';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 import DomainSearch from '../DomainSearch';
 import SearchResults from '../SearchResults';
+import util from '../util';
 
 const props = {
   cartUrl: 'storefront.api.secureserver.net/api/v1/cart',
@@ -36,7 +36,7 @@ describe('DomainSearch', () => {
 
   it('should not call handleDomainSearch when an empty form is submitted', () => {
     const wrapper = mount(<DomainSearch {...props} />);
-    const spy = sandbox.spy($, 'ajax');
+    const spy = sandbox.spy(util, 'fetch');
 
     wrapper.find('form').simulate('submit', { preventDefault() {} });
 
@@ -46,7 +46,7 @@ describe('DomainSearch', () => {
   it('should error if domain search fails', () => {
     const wrapper = mount(<DomainSearch {...props} />);
 
-    sandbox.stub($, 'ajax').callsFake(() => Promise.reject());
+    sandbox.stub(util, 'fetch').callsFake(() => Promise.reject());
 
     wrapper.ref('domainSearch').get(0).value = 'test.com';
     wrapper.find('form').simulate('submit', { preventDefault() {} });
@@ -60,7 +60,7 @@ describe('DomainSearch', () => {
     const wrapper = mount(<DomainSearch {...props} />);
     const domain = 'test.com';
 
-    sandbox.stub($, 'ajax').callsFake(() => Promise.resolve({
+    sandbox.stub(util, 'fetch').callsFake(() => Promise.resolve({
       exactMatchDomain: { domain },
       suggestedDomains: [{ domain }]
     }));

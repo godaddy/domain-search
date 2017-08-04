@@ -1,52 +1,54 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import $ from 'jquery';
+import util from './util';
 
 export default class Domain extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super(...arguments);
 
     this.handleCartClick = this.handleCartClick.bind(this);
 
     this.state = {
-      completed: true,
       addingToCart: false,
+      completed: false,
       error: null
     };
   };
 
   handleCartClick() {
     this.setState({
-      completed: false,
       addingToCart: true
     });
 
-    const data = {
-      items: [{
-        id: 'domain',
-        domain: this.props.domainResult.domain,
-        productId: this.props.domainResult.productId
-      }]
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        items: [{
+          id: 'domain',
+          domain: this.props.domainResult.domain,
+          productId: this.props.domainResult.productId
+        }]
+      })
     };
 
-    $.ajax({
-      method: "POST",
-      url: this.props.cartUrl,
-      crossDomain: true,
-      xhrFields: {
-        withCredentials: true
-      },
-      data
-    }).then(() => {
-      this.setState({
-        completed: true
+    util.fetch(this.props.cartUrl, options)
+      .then(() => {
+        this.setState({
+          addingToCart: false,
+          completed: true,
+          error: null
+        });
+      }).catch(() => {
+        this.setState({
+          addingToCart: false,
+          completed: true,
+          error: this.props.i18n.error
+        });
       });
-    }).catch(() => {
-      this.setState({
-        completed: true,
-        error: this.props.i18n.error
-      });
-    });
   }
 
   render() {
@@ -64,7 +66,12 @@ export default class Domain extends Component {
 
     let content;
 
-    if (addingToCart && completed && !error) {
+    if (addingToCart && !completed) {
+      content = (
+        <div className="rstore-loading"></div>
+      );
+    }
+    else if (completed && !error) {
       content = (
         <div className="rstore-message">
           <span className="dashicons dashicons-yes rstore-success"></span>
@@ -72,17 +79,12 @@ export default class Domain extends Component {
         </div>
       );
     }
-    else if (addingToCart && completed && error) {
+    else if (completed && error) {
       content = (
         <div className="rstore-message">
           <span className="dashicons dashicons-no-alt rstore-error"></span>
           {this.props.i18n.error}
         </div>
-      );
-    }
-    else if (addingToCart && !completed) {
-      content = (
-        <div className="rstore-loading"></div>
       );
     }
     else {
@@ -98,7 +100,7 @@ export default class Domain extends Component {
     }
 
     // istanbul ignore else
-    if (domain != null && listPrice != null) {
+    if (domain && listPrice) {
       return (
         <div className="domain-result">
           <div className="domain-name">

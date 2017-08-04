@@ -14,7 +14,7 @@ class App extends Component {
     return (
       <div className="App">
         <div className="container">
-          <DomainSearch cartUrl={this.state.cartUrl} domainUrl={this.state.domainUrl} i18n={this.state.i18n} />
+          <DomainSearch {...this.state} />
         </div>
       </div>
     );

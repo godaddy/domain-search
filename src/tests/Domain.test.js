@@ -1,8 +1,8 @@
 import React from 'react';
-import $ from 'jquery';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 import Domain from '../Domain';
+import util from '../util';
 
 const props = {
   domainResult: {
@@ -46,7 +46,7 @@ describe('Domain', () => {
   it('should error if item cannot be added to cart', () => {
     const wrapper = mount(<Domain {...props} />);
 
-    sandbox.stub($, 'ajax').callsFake(() => Promise.reject());
+    sandbox.stub(util, 'fetch').callsFake(() => Promise.reject());
 
     wrapper.find('button').simulate('click');
 
@@ -58,7 +58,7 @@ describe('Domain', () => {
   it('should successfully add item to cart when valid data is provided', () => {
     const wrapper = mount(<Domain {...props} />);
 
-    sandbox.stub($, 'ajax').callsFake(() => Promise.resolve());
+    sandbox.stub(util, 'fetch').callsFake(() => Promise.resolve());
 
     wrapper.find('button').simulate('click');
 

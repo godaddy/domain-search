@@ -17,6 +17,40 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
   - `npm start` - the app will run on port 3000 by default. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
   - Please visit [https://storefront.api.secureserver.net/api/explore/](https://storefront.api.secureserver.net/api/explore/) for the official Storefront API documentation.
 
+## Usage
+- Add the following HTML to the page that you want the domain search widget to appear on. The compiled JS is located in `dist/index.js`.
+
+```html
+<div class="rstore-domain-search"></div>
+<!-- Sample data - WordPress will inject these variables into the site -->
+<script type='text/javascript'>
+  var rstore = {
+    "pl_id": "1592",
+    "urls": {
+      "cart": "https:\/\/cart.secureserver.net\/?pl_id=1592",
+      "cart_api": "https:\/\/storefront.api.secureserver.net\/api\/v1\/cart\/1592\/?currencyType=USD&marketId=en-US",
+      "domain_api": "https:\/\/storefront.api.secureserver.net\/api\/v1\/domains\/1592\/?currencyType=USD&marketId=en-US"
+    },
+    "cookies": {
+      "ttl": 2592000000,
+      "cartCount": "rstore-cart-count"
+    },
+    "product": {
+      "id": "plesk-ultimate"
+    },
+    "i18n": {
+      "add_to_cart": "Add to cart",
+      "available": "Congrats, your domain is available!",
+      "error": "An error has occurred",
+      "not_available": "Sorry, that domain is taken.",
+      "placeholder": "Find your perfect domain name",
+      "search": "Search",
+      "view_cart": "View cart"
+    }
+  };
+</script>
+```
+
 ## Available Scripts
 
 #### `npm start`
@@ -34,7 +68,7 @@ Run `npm test -- --coverage` to generate a code coverage report.
 
 #### `npm run build`
 
-Builds the app for production to the `build` folder.
+Builds the app for production to the `build` folder. The compiled JavaScript will also be made available in `dist/index.js`.
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.

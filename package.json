@@ -1,6 +1,6 @@
 {
   "name": "domain-search",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React-based domain search widget used for designing and building custom GoDaddy reseller storefronts",
   "main": "dist/index.js",
   "scripts": {
@@ -9,12 +9,15 @@
     "postbuild": "node ./postbuild.js",
     "lint": "node node_modules/eslint/bin/eslint.js --config node_modules/eslint-config-react-app/index.js src/*",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/resellers/domain-search"
+    "url": "https://github.com/godaddy/domain-search"
   },
+  "homepage": "https://godaddy.github.io/domain-search",
   "author": "GoDaddy.com Operating Company, LLC",
   "contributors": [
     "Chris Beresford <cberesford@godaddy.com>",

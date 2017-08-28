@@ -6,6 +6,10 @@ In order to sell domains and make commission on your own custom storefront, you 
 
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app). Please visit their GitHub repo for additional context and advanced usage.
 
+## Demo
+
+You can view a demo of the domain search component at https://godaddy.github.io/domain-search/.
+
 ## Getting Started
 
 - Make sure you have an active [GoDaddy Reseller Plan](https://www.godaddy.com/reseller-program), otherwise you will not be able to make commissions on any domain sales from your site.
@@ -18,7 +22,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
   - Please visit [https://storefront.api.secureserver.net/api/explore/](https://storefront.api.secureserver.net/api/explore/) for the official Storefront API documentation.
 
 ## Usage
-- Add the following HTML to the page that you want the domain search widget to appear on. The compiled JS is located in `dist/index.js`.
+- Add the following HTML to the page that you want the domain search component to appear on. The compiled JS is located in `dist/index.js`.
 
 ```html
 <div class="rstore-domain-search"></div>

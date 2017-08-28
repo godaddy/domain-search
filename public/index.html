@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Domain Search Test</title>
+    <link rel='stylesheet' id='rstore-css' href='store.css' type='text/css' media='all' />
+    <link rel='stylesheet' id='dashicons-css' href='dashicons.min.css' type='text/css' media='all' />
+  </head>
+
+  <body>
+    <div class="header">
+      <h2>Reseller Domain Search</h2>
+    </div>
+    <div class="instructions">
+      <ul>
+        <li>Update the global <code>rstore</code> variable in <code>public/index.html</code> with your <code>pl_id</code> to use your own cart. </li>
+        <li>Make sure to replace all occurrences of the value <code>1592</code>, otherwise all cart actions will be applied to that <code>pl_id</code> instead of your own.</li>
+        <li>Visit <a href="https://storefront.api.secureserver.net/api/explore/">https://storefront.api.secureserver.net/api/explore/</a> for the official Storefront API documentation. </li>
+      </ul>
+    </div>
+    <hr />
+
+    <div class="rstore-domain-search"></div>
+    <!-- Sample data - WordPress will inject these variables into the site -->
+    <script type='text/javascript'>
+      var rstore = {
+        "pl_id": "1592",
+        "urls": {
+          "cart": "https:\/\/cart.secureserver.net\/?pl_id=1592",
+          "cart_api": "https:\/\/storefront.api.secureserver.net\/api\/v1\/cart\/1592\/?currencyType=USD&marketId=en-US",
+          "domain_api": "https:\/\/storefront.api.secureserver.net\/api\/v1\/domains\/1592\/?currencyType=USD&marketId=en-US"
+        },
+        "cookies": {
+          "ttl": 2592000000,
+          "cartCount": "rstore-cart-count"
+        },
+        "product": {
+          "id": "plesk-ultimate"
+        },
+        "i18n": {
+          "add_to_cart": "Add to cart",
+          "available": "Congrats, your domain is available!",
+          "error": "An error has occurred",
+          "not_available": "Sorry, that domain is taken.",
+          "placeholder": "Find your perfect domain name",
+          "search": "Search",
+          "view_cart": "View cart"
+        }
+      };
+    </script>
+  </body>
+</html>

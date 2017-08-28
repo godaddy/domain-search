@@ -2,9 +2,11 @@
   "name": "domain-search",
   "version": "1.0.0",
   "description": "React-based domain search widget used for designing and building custom GoDaddy reseller storefronts",
+  "main": "dist/index.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "postbuild": "node ./postbuild.js",
     "lint": "node node_modules/eslint/bin/eslint.js --config node_modules/eslint-config-react-app/index.js src/*",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

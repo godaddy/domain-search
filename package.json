@@ -1,6 +1,6 @@
 {
   "name": "domain-search",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "React-based domain search widget used for designing and building custom GoDaddy reseller storefronts",
   "main": "dist/index.js",
   "scripts": {

@@ -31,18 +31,16 @@
     "react"
   ],
   "license": "MIT",
-  "dependencies": {
-    "react": "15.4.2",
-    "react-dom": "15.4.2",
-    "react-scripts": "1.0.10",
-    "react-test-renderer": "^15.6.1",
-    "whatwg-fetch": "^2.0.3"
-  },
   "devDependencies": {
     "enzyme": "^2.9.1",
+    "gh-pages": "^1.0.0",
     "prop-types": "^15.5.10",
+    "react": "^15.6.1",
     "react-addons-test-utils": "^15.6.0",
-    "react-scripts": "1.0.0",
-    "sinon": "^2.4.1"
+    "react-dom": "^15.6.1",
+    "react-scripts": "1.0.10",
+    "react-test-renderer": "^15.6.1",
+    "sinon": "^2.4.1",
+    "whatwg-fetch": "^2.0.3"
   }
 }

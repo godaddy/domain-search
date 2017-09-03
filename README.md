@@ -25,34 +25,23 @@ You can view a demo of the domain search component at https://godaddy.github.io/
 - Add the following HTML to the page that you want the domain search component to appear on. The compiled JS is located in `dist/index.js`.
 
 ```html
-<div class="rstore-domain-search"></div>
-<!-- Sample data - WordPress will inject these variables into the site -->
-<script type='text/javascript'>
-  var rstore = {
-    "pl_id": "1592",
-    "urls": {
-      "cart": "https:\/\/cart.secureserver.net\/?pl_id=1592",
-      "cart_api": "https:\/\/storefront.api.secureserver.net\/api\/v1\/cart\/1592\/?currencyType=USD&marketId=en-US",
-      "domain_api": "https:\/\/storefront.api.secureserver.net\/api\/v1\/domains\/1592\/?currencyType=USD&marketId=en-US"
-    },
-    "cookies": {
-      "ttl": 2592000000,
-      "cartCount": "rstore-cart-count"
-    },
-    "product": {
-      "id": "plesk-ultimate"
-    },
-    "i18n": {
-      "add_to_cart": "Add to cart",
-      "available": "Congrats, your domain is available!",
-      "error": "An error has occurred",
-      "not_available": "Sorry, that domain is taken.",
-      "placeholder": "Find your perfect domain name",
-      "search": "Search",
-      "view_cart": "View cart"
-    }
-  };
-</script>
+<div class="rstore-domain-search" data-plid='1592'></div>
+```
+
+Optional parameter to change number of results returned in the search
+```
+data-page-size="5"
+```
+
+The domain search component is internationalizable. To change any of the strings provide the follow data attributes in the `div`
+```
+data-text-placeholder="Find your perfect domain name"
+data-text-search="Search"
+data-text-available="Congrats, your domain is available!"
+data-text-not-available="Sorry that domain is taken"
+data-text-cart="Continue to Cart"
+data-text-select="Select"
+data-text-selected="Selected"
 ```
 
 ## Available Scripts

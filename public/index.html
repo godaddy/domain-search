@@ -15,39 +15,21 @@
     <div class="instructions">
       <ul>
         <li>Update the global <code>rstore</code> variable in <code>public/index.html</code> with your <code>pl_id</code> to use your own cart. </li>
-        <li>Make sure to replace all occurrences of the value <code>1592</code>, otherwise all cart actions will be applied to that <code>pl_id</code> instead of your own.</li>
+        <li>Make sure to replace all occurrences of the value <code>1941</code>, otherwise all cart actions will be applied to that <code>pl_id</code> instead of your own.</li>
         <li>Visit <a href="https://storefront.api.secureserver.net/api/explore/">https://storefront.api.secureserver.net/api/explore/</a> for the official Storefront API documentation. </li>
       </ul>
     </div>
     <hr />
+    <div class="rstore-domain-search" data-plid="1592"
+    data-page-size="5"
+    data-text-placeholder="Find your perfect domain name"
+    data-text-search="Search"
+    data-text-available="Congrats, your domain is available!"
+    data-text-not-available="Sorry that domain is taken"
+    data-text-cart="Continue to Cart"
+    data-text-select="Select"
+    data-text-selected="Selected"
 
-    <div class="rstore-domain-search"></div>
-    <!-- Sample data - WordPress will inject these variables into the site -->
-    <script type='text/javascript'>
-      var rstore = {
-        "pl_id": "1592",
-        "urls": {
-          "cart": "https:\/\/cart.secureserver.net\/?pl_id=1592",
-          "cart_api": "https:\/\/storefront.api.secureserver.net\/api\/v1\/cart\/1592\/?currencyType=USD&marketId=en-US",
-          "domain_api": "https:\/\/storefront.api.secureserver.net\/api\/v1\/domains\/1592\/?currencyType=USD&marketId=en-US"
-        },
-        "cookies": {
-          "ttl": 2592000000,
-          "cartCount": "rstore-cart-count"
-        },
-        "product": {
-          "id": "plesk-ultimate"
-        },
-        "i18n": {
-          "add_to_cart": "Add to cart",
-          "available": "Congrats, your domain is available!",
-          "error": "An error has occurred",
-          "not_available": "Sorry, that domain is taken.",
-          "placeholder": "Find your perfect domain name",
-          "search": "Search",
-          "view_cart": "View cart"
-        }
-      };
-    </script>
+></div>
   </body>
 </html>

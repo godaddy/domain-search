@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import util from './util';
 
 export default class Domain extends Component {
   constructor() {
@@ -15,40 +14,10 @@ export default class Domain extends Component {
     };
   };
 
-  handleCartClick() {
-    this.setState({
-      addingToCart: true
-    });
-
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        items: [{
-          id: 'domain',
-          domain: this.props.domainResult.domain,
-          productId: this.props.domainResult.productId
-        }]
-      })
-    };
-
-    util.fetch(this.props.cartUrl, options)
-      .then(() => {
-        this.setState({
-          addingToCart: false,
-          completed: true,
-          error: null
-        });
-      }).catch(() => {
-        this.setState({
-          addingToCart: false,
-          completed: true,
-          error: this.props.i18n.error
-        });
-      });
+  handleCartClick(e) {
+    e.preventDefault();
+    this.props.cartClick(this);
+    return false;
   }
 
   render() {
@@ -68,14 +37,16 @@ export default class Domain extends Component {
 
     if (addingToCart && !completed) {
       content = (
-        <div className="rstore-loading"></div>
+        <div className="rstore-message">
+          <div className="rstore-loading"></div>
+        </div>
       );
     }
     else if (completed && !error) {
       content = (
         <div className="rstore-message">
           <span className="dashicons dashicons-yes rstore-success"></span>
-          <a href={window.rstore.urls.cart}>{this.props.i18n.view_cart}</a>
+          <a className="rstore-domain-buy-button submit button selected" onClick={this.handleCartClick}>{this.props.text.selected}</a>
         </div>
       );
     }
@@ -83,18 +54,16 @@ export default class Domain extends Component {
       content = (
         <div className="rstore-message">
           <span className="dashicons dashicons-no-alt rstore-error"></span>
-          {this.props.i18n.error}
+          {this.props.text.error}
         </div>
       );
     }
     else {
       content = (
-        <div className="pricing">
+        <div className="rstore-message">
           {listPrice !== salePrice && <span className="listPrice"><small><s>{listPrice}</s></small></span>}
           <span className="salePrice"><strong>{salePrice}</strong></span>
-          <button className="rstore-domain-buy-button submit button" onClick={this.handleCartClick}>
-            {this.props.i18n.add_to_cart}
-          </button>
+           <a className="rstore-domain-buy-button submit button select" onClick={this.handleCartClick}>{this.props.text.select}</a>
         </div>
       );
     }
@@ -117,6 +86,6 @@ export default class Domain extends Component {
 
 Domain.propTypes = {
   domainResult: PropTypes.object.isRequired,
-  cartUrl: PropTypes.string.isRequired,
-  i18n: PropTypes.object.isRequired
+  text: PropTypes.object.isRequired,
+  cartClick: PropTypes.func.isRequired
 }

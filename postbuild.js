@@ -18,9 +18,12 @@ fs.readFile(src+file, 'utf8', (err, data) => {
     process.exit(1);
   }
 
+  let version = `/*!\n* domain-search v${process.env.npm_package_version}\n* Licensed under MIT\n*/\n`;
+
   let result = data.split('//# sourceMappingURL');
 
   if (result[result.length - 1] !== undefined && result.length > 1) {
-    fs.writeFileSync(dest + 'index.js', result.slice(0, result.length - 1));
+    fs.writeFileSync(dest + 'index.js', version);
+    fs.appendFileSync(dest + 'index.js', result.slice(0, result.length - 1));
   }
 });

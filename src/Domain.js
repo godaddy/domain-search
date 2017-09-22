@@ -5,16 +5,14 @@ export default class Domain extends Component {
   constructor() {
     super(...arguments);
 
-    this.handleCartClick = this.handleCartClick.bind(this);
+    this.handleSelectClick = this.handleSelectClick.bind(this);
 
     this.state = {
-      addingToCart: false,
-      completed: false,
-      error: null
+      selected: false
     };
   };
 
-  handleCartClick(e) {
+  handleSelectClick(e) {
     e.preventDefault();
     this.props.cartClick(this);
     return false;
@@ -28,33 +26,16 @@ export default class Domain extends Component {
     } = this.props.domainResult;
 
     const {
-      addingToCart,
-      completed,
-      error
+      selected,
     } = this.state;
 
     let content;
 
-    if (addingToCart && !completed) {
-      content = (
-        <div className="rstore-message">
-          <div className="rstore-loading"></div>
-        </div>
-      );
-    }
-    else if (completed && !error) {
+    if (selected) {
       content = (
         <div className="rstore-message">
           <span className="dashicons dashicons-yes rstore-success"></span>
-          <a className="rstore-domain-buy-button submit button selected" onClick={this.handleCartClick}>{this.props.text.selected}</a>
-        </div>
-      );
-    }
-    else if (completed && error) {
-      content = (
-        <div className="rstore-message">
-          <span className="dashicons dashicons-no-alt rstore-error"></span>
-          {this.props.text.error}
+          <a className="rstore-domain-buy-button submit button selected" onClick={this.handleSelectClick}>{this.props.text.selected}</a>
         </div>
       );
     }
@@ -63,7 +44,7 @@ export default class Domain extends Component {
         <div className="rstore-message">
           {listPrice !== salePrice && <span className="listPrice"><small><s>{listPrice}</s></small></span>}
           <span className="salePrice"><strong>{salePrice}</strong></span>
-           <a className="rstore-domain-buy-button submit button select" onClick={this.handleCartClick}>{this.props.text.select}</a>
+           <a className="rstore-domain-buy-button submit button select" onClick={this.handleSelectClick}>{this.props.text.select}</a>
         </div>
       );
     }

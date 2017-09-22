@@ -57,6 +57,7 @@ input[type="submit"] {
 
 a {
   color: #ff6663;
+  cursor: pointer;
   text-decoration: none; }
   a:visited {
     color: #ff6663; }

@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import SearchResults from './SearchResults';
 import ExactDomain from './ExactDomain';
 import util from './util';
-import queryString from 'query-string'
 
 const initialState = {
-  domain: null,
+  exactDomain: null,
   suggestedDomains: null,
   searching: false,
-  domainCount: 0
+  addingToCart: false,
+  error: '',
+  selectedDomains: []
 };
 
 export default class DomainSearch extends Component {
@@ -52,81 +53,117 @@ export default class DomainSearch extends Component {
     util.fetch(domainUrl, options)
       .then(data => {
         this.setState({
-          domain: data.exactMatchDomain,
+          exactDomain: data.exactMatchDomain,
           suggestedDomains: data.suggestedDomains,
+          error: data.error ? data.error.message : '',
           searching: false
         });
-      }).catch(() => {
-        this.setState(initialState);
+      }).catch(error => {
+        this.setState({
+          searching: false,
+          error: error.message
+        });
       });
   }
 
-  addPendingDomain(domain, add) {
-    const params = {
-      applyBP: 1,
-      pl_id: this.props.plid,
-      domain,
-      domainstatus: 'available'
-    };
+  addDomains(domains) {
+    const {
+      baseUrl,
+      plid
+    } = this.props;
 
-    const cartStatus = add ? 1 : 2;
+    const cartUrl = `https://storefront.api.${baseUrl}/api/v1/cart/${plid}/`;
 
-    const dppUrl = `https://www.${this.props.baseUrl}/api/dpp/searchresultscart/${cartStatus}?${queryString.stringify(params)}`;
+    const items =[];
+
+    domains.forEach(domain => {
+      items.push({
+        id: 'domain',
+        domain
+      });
+    });
 
     const options = {
-      method: 'GET',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       credentials: 'include',
-      mode: 'no-cors'
+      body: JSON.stringify({ items })
     };
-    return util.fetch(dppUrl, options)
+
+    return util.fetch(cartUrl, options)
   }
 
   handleContinueClick(e) {
     e.preventDefault();
-    const configurationUrl = `https://www.${this.props.baseUrl}/domains/domain-configuration.aspx?pl_id=${this.props.plid}`;
+    this.setState({ addingToCart: true });
 
-    if (this.state.domainCount === 0 && this.state.domain.available) {
-      this.addPendingDomain(
-        this.state.domain.domain,
-        true,
-      ).then(() => {
-        window.location.href = configurationUrl;
+    let domains;
+
+    if (this.state.selectedDomains.length === 0 && this.state.exactDomain.available) {
+      domains = [this.state.exactDomain.domain];
+    }
+    else
+    {
+      domains = this.state.selectedDomains;
+    }
+
+    this.addDomains(
+      domains
+    ).then(response => {
+      if (response.cartUrl) {
+       return window.location.href = response.cartUrl;
+      }
+
+      if (response.error){
+        return this.setState({
+          addingToCart:false,
+          error: response.error.message
+        });
+      }
+
+      return this.setState({
+        addingToCart:false
+      });
+
+    }).catch(error => {
+      this.setState({
+        addingToCart:false,
+        error: error.message
+      });
+    });
+  }
+
+  handleSelectClick(domainObj) {
+    const { selectedDomains } = this.state,
+      { domain } = domainObj.props.domainResult;
+
+    const index = selectedDomains.indexOf(domain);
+    let newSelectDomains = [];
+    if (index >= 0 ){
+      newSelectDomains = [
+        ...selectedDomains.slice(0, index),
+        ...selectedDomains.slice(index+1)
+      ];
+
+      domainObj.setState({
+        selected: false,
       });
     }
     else
     {
-     window.location.href = configurationUrl;
+      newSelectDomains = [
+        ...selectedDomains,
+        domain
+      ];
+       domainObj.setState({
+        selected: true,
+      });
     }
-  }
 
-  handleCartClick(domain) {
-    domain.setState({
-      addingToCart: true
-    });
-
-    this.addPendingDomain(
-      domain.props.domainResult.domain,
-      !domain.state.completed,
-    ).then(response => {
-      domain.setState({
-        addingToCart: false,
-        completed: !domain.state.completed,
-        error: null,
-      });
-
-      if (domain.state.completed) {
-        this.setState({ domainCount: this.state.domainCount + 1 })
-      }
-      else {
-        this.setState({ domainCount: this.state.domainCount - 1 })
-      }
-    }).catch( (error) => {
-      domain.setState({
-        addingToCart: false,
-        completed: true,
-        error: this.props.text.error
-      });
-    });
+    console.log(newSelectDomains);
+    this.setState({ selectedDomains: newSelectDomains });
   }
 
   render() {
@@ -134,29 +171,37 @@ export default class DomainSearch extends Component {
 
     const {
       searching,
-      domain,
+      addingToCart,
+      exactDomain,
       suggestedDomains,
-      domainCount
+      selectedDomains,
+      error
     } = this.state;
+
+    const domainCount = selectedDomains.length;
 
     if (searching) {
       content = (
         <div className="rstore-loading"></div>
       );
     }
-    else if (domain || suggestedDomains) {
+    else if (exactDomain || suggestedDomains) {
       content = (
         <div>
           <div className="continue-block">
-            { (domainCount || domain.available) && <button type="button" className="rstore-domain-continue-button button" onClick={this.handleContinueClick} >{this.props.text.cart}</button>}
+            { ((domainCount || exactDomain.available) && !addingToCart) && <button type="button" className="rstore-domain-continue-button button" onClick={this.handleContinueClick} >{this.props.text.cart}</button>}
+            { (addingToCart) && <div className="rstore-loading"></div>}
+            { (error) && <div className="rstore-error">Error: {error}</div>}
           </div>
-          <ExactDomain domainResult={domain} cartClick={(domain) => this.handleCartClick(domain)} text={this.props.text} domainCount={domainCount} />
-          <SearchResults domains={suggestedDomains} cartClick={(domain) => this.handleCartClick(domain)} text={this.props.text} />
+          <ExactDomain domainResult={exactDomain} cartClick={(domain) => this.handleSelectClick(domain)} text={this.props.text} domainCount={domainCount} />
+          <SearchResults domains={suggestedDomains} cartClick={(domain) => this.handleSelectClick(domain)} text={this.props.text} />
         </div>
       );
     }
     else {
-      content = ('');
+      content = (
+        (error) && <div className="rstore-error">Error: {error}</div>
+      );
     }
 
     return (

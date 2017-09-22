@@ -2,7 +2,6 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import sinon from 'sinon';
 import Domain from '../Domain';
-import util from '../util';
 
 const props = {
   domainResult: {
@@ -10,8 +9,8 @@ const props = {
     listPrice: '$9.99',
     salePrice: '$7.99'
   },
-  cartUrl: 'storefront.api.secureserver.net/api/v1/cart',
-  i18n: {}
+  cartClick: () => {},
+  text: {}
 };
 
 let sandbox;
@@ -29,58 +28,22 @@ describe('Domain', () => {
     shallow(<Domain {...props} />);
   });
 
-  it('should render spinner when searching', () => {
-    const wrapper = shallow(<Domain {...props} />);
-
-    wrapper.setState({ addingToCart: true, completed: false });
-
-    expect(wrapper.find('.rstore-loading')).toHaveLength(1);
-  });
-
-  it('should call handleCartClick on button click', () => {
-    const wrapper = shallow(<Domain {...props} />);
-
-    wrapper.find('button').simulate('click');
-  });
-
-  it('should error if item cannot be added to cart', () => {
+  it('should successfully add when domain is selected', () => {
     const wrapper = mount(<Domain {...props} />);
 
-    sandbox.stub(util, 'fetch').callsFake(() => Promise.reject());
-
-    wrapper.find('button').simulate('click');
+    wrapper.find('a').simulate('click');
 
     setTimeout(() => {
-      expect(wrapper.state('completed')).toEqual(true);
+      expect(wrapper.state('listPrice')).toHaveLength(1);
     }, 50);
   });
 
-  it('should successfully add item to cart when valid data is provided', () => {
-    const wrapper = mount(<Domain {...props} />);
-
-    sandbox.stub(util, 'fetch').callsFake(() => Promise.resolve());
-
-    wrapper.find('button').simulate('click');
-
-    setTimeout(() => {
-      expect(wrapper.state('completed')).toEqual(true);
-      expect(wrapper.state('error')).toBeNull();
-    }, 50);
-  });
-
-  it('should render success message when a domain is added to the cart', () => {
+  it('should remove item when domain is unselected', () => {
     const wrapper = shallow(<Domain {...props} />);
 
-    wrapper.setState({ addingToCart: true, completed: true });
+    wrapper.setState({ selected: true });
 
     expect(wrapper.find('.rstore-success')).toHaveLength(1);
   });
 
-  it('should render error message when a domain fails to be added to the cart', () => {
-    const wrapper = shallow(<Domain {...props} />);
-
-    wrapper.setState({ addingToCart: true, completed: true, error: 'error' });
-
-    expect(wrapper.find('.rstore-error')).toHaveLength(1);
-  });
 });

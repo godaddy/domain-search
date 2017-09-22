@@ -16,7 +16,13 @@ describe('App', () => {
   it('should render for each rstore-domain-search', () => {
     const render = sandbox.stub(ReactDOM, 'render').callsFake(() => {});
 
-    sandbox.stub(global.document, 'getElementsByClassName').callsFake(() => [1, 2, 3]);
+    const element = {
+      dataset: {
+        plid: '123'
+      }
+    }
+
+    sandbox.stub(global.document, 'getElementsByClassName').callsFake(() => [element, element, element]);
 
     require('../');
 

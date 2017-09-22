@@ -6,8 +6,8 @@ const props = {
   domains: [{
     available: true
   }],
-  cartUrl: 'storefront.api.secureserver.net/api/v1/cart',
-  i18n: {}
+  cartClick: () => {},
+  text: {}
 };
 
 describe('SearchResults', () => {

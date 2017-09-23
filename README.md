@@ -30,18 +30,18 @@ You can view a demo of the domain search component at https://godaddy.github.io/
 
 Optional parameter to change number of results returned in the search
 ```
-data-page-size="5"
+data-page_size="5"
 ```
 
 The domain search component is internationalizable. To change any of the strings provide the follow data attributes in the `div`
 ```
-data-text-placeholder="Find your perfect domain name"
-data-text-search="Search"
-data-text-available="Congrats, your domain is available!"
-data-text-not-available="Sorry that domain is taken"
-data-text-cart="Continue to Cart"
-data-text-select="Select"
-data-text-selected="Selected"
+data-text_placeholder="Find your perfect domain name"
+data-text_search="Search"
+data-text_available="Congrats, your domain is available!"
+data-text_not_available="Sorry that domain is taken"
+data-text_cart="Continue to Cart"
+data-text_select="Select"
+data-text_selected="Selected"
 ```
 
 ## Available Scripts

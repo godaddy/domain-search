@@ -71,9 +71,7 @@ export default class DomainSearch extends Component {
       baseUrl,
       plid
     } = this.props;
-
     const cartUrl = `https://storefront.api.${baseUrl}/api/v1/cart/${plid}/`;
-
     const items =[];
 
     domains.forEach(domain => {
@@ -104,8 +102,7 @@ export default class DomainSearch extends Component {
     if (this.state.selectedDomains.length === 0 && this.state.exactDomain.available) {
       domains = [this.state.exactDomain.domain];
     }
-    else
-    {
+    else {
       domains = this.state.selectedDomains;
     }
 
@@ -138,7 +135,6 @@ export default class DomainSearch extends Component {
   handleSelectClick(domainObj) {
     const { selectedDomains } = this.state,
       { domain } = domainObj.props.domainResult;
-
     const index = selectedDomains.indexOf(domain);
     let newSelectDomains = [];
     if (index >= 0 ){
@@ -151,8 +147,7 @@ export default class DomainSearch extends Component {
         selected: false,
       });
     }
-    else
-    {
+    else {
       newSelectDomains = [
         ...selectedDomains,
         domain
@@ -162,7 +157,6 @@ export default class DomainSearch extends Component {
       });
     }
 
-    console.log(newSelectDomains);
     this.setState({ selectedDomains: newSelectDomains });
   }
 

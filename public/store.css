@@ -57,6 +57,7 @@ input[type="submit"] {
 
 a {
   color: #ff6663;
+  cursor: pointer;
   text-decoration: none; }
   a:visited {
     color: #ff6663; }
@@ -100,6 +101,7 @@ hr {
 
 .rstore-message {
   display: inline-block;
+  height: 48px;
 }
 
 .rstore-message span.dashicons {
@@ -194,7 +196,7 @@ hr {
   border: 1px solid #e8e8e8;
   float: left;
   min-width: 290px;
-  padding: 15px 20px 5px 15px;
+  padding: 10px 20px 10px 15px;
   vertical-align: middle;
   width: 99%;
 }
@@ -210,6 +212,11 @@ hr {
   vertical-align: -webkit-baseline-middle;
   word-break: break-word;
   padding: 10px 0;
+}
+
+.rstore-domain-search .continue-block {
+  display: block;
+  float: right;
 }
 
 .rstore-domain-search .purchase-info {
@@ -230,8 +237,4 @@ hr {
 
 .rstore-domain-search .rstore-domain-buy-button {
   margin-left: 10px;
-}
-
-.rstore-domain-search .rstore-message {
-  padding: 10px;
 }

@@ -6,9 +6,9 @@ import SearchResults from '../SearchResults';
 import util from '../util';
 
 const props = {
-  cartUrl: 'storefront.api.secureserver.net/api/v1/cart',
-  domainUrl: 'storefront.api.secureserver.net/api/v1/domains',
-  i18n: {}
+  plid: '123',
+  text: {},
+  baseUrl: 'secureserver.net'
 };
 
 let sandbox;
@@ -46,7 +46,7 @@ describe('DomainSearch', () => {
   it('should error if domain search fails', () => {
     const wrapper = mount(<DomainSearch {...props} />);
 
-    sandbox.stub(util, 'fetch').callsFake(() => Promise.reject());
+    sandbox.stub(util, 'fetch').callsFake(() => Promise.reject('error message'));
 
     wrapper.ref('domainSearch').get(0).value = 'test.com';
     wrapper.find('form').simulate('submit', { preventDefault() {} });
@@ -79,8 +79,8 @@ describe('DomainSearch', () => {
     const wrapper = shallow(<DomainSearch {...props} />);
     const searchProps = {
       domains: [],
-      cartUrl: 'storefront.api.secureserver.net/api/v1/cart',
-      i18n: {}
+      cartClick: () => {},
+      text: {}
     };
 
     wrapper.setState({ searching: true, completed: true });

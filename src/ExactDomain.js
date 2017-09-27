@@ -2,32 +2,41 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Domain from './Domain';
 
-const ExactDomain = ({ domain, cartUrl, i18n }) => {
-  let content;
+const ExactDomain = (props) => {
+  const {
+    domainResult,
+    text,
+    domainCount
+  } = props;
 
-  if (domain.available) {
+  let content = null;
+
+  if (domainResult.available) {
     content = (
       <div className="rstore-exact-domain-list">
-        <h4>{i18n.available}</h4>
-        <Domain domainResult={domain} cartUrl={cartUrl} i18n={i18n}/>
+        <h4 className="available">{text.available}</h4>
+        <Domain {...props} />
       </div>
     );
   }
   else {
-    content = (
-      <div>
-        <h4>{i18n.not_available}</h4>
-      </div>
-    );
+    if (domainCount === 0 ) {
+      content = (
+        <div className="rstore-exact-domain-list" >
+          <h4 className="not-available">{text.notAvailable}</h4>
+        </div>
+      );
+    }
   }
 
   return content;
 }
 
 ExactDomain.propTypes = {
-  domain: PropTypes.object.isRequired,
-  cartUrl: PropTypes.string.isRequired,
-  i18n: PropTypes.object.isRequired
+  domainResult: PropTypes.object.isRequired,
+  text: PropTypes.object.isRequired,
+  cartClick: PropTypes.func.isRequired,
+  domainCount: PropTypes.number.isRequired
 }
 
 export default ExactDomain;

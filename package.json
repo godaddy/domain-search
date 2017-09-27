@@ -8,7 +8,7 @@
     "build": "react-scripts build",
     "postbuild": "node ./postbuild.js",
     "lint": "node node_modules/eslint/bin/eslint.js --config node_modules/eslint-config-react-app/index.js src/*",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --setupTestFrameworkScriptFile=raf/polyfill",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
@@ -32,15 +32,16 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "enzyme": "^2.9.1",
+    "enzyme": "^3.0.0",
+    "enzyme-adapter-react-16": "^1.0.0",
     "gh-pages": "^1.0.0",
-    "prop-types": "^15.5.10",
-    "react": "^15.6.1",
-    "react-addons-test-utils": "^15.6.0",
-    "react-dom": "^15.6.1",
-    "react-scripts": "1.0.10",
-    "react-test-renderer": "^15.6.1",
-    "sinon": "^2.4.1",
+    "prop-types": "^15.6.0",
+    "react": "^16.0.0",
+    "react-addons-test-utils": "^15.6.2",
+    "react-dom": "^16.0.0",
+    "react-scripts": "1.0.14",
+    "react-test-renderer": "^16.0.0",
+    "sinon": "^4.0.0",
     "whatwg-fetch": "^2.0.3"
   }
 }

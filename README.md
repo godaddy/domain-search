@@ -1,5 +1,7 @@
 # Domain Search
 
+[![devDependencies Status](https://david-dm.org/godaddy/domain-search/master/dev-status.svg)](https://david-dm.org/godaddy/domain-search/master?type=dev)
+
 This is a simple react-based domain search widget used for designing and building custom GoDaddy reseller storefronts, as seen in our [WordPress Storefront Plugin](https://github.com/godaddy/wp-reseller-store).
 
 In order to sell domains and make commission on your own custom storefront, you will need an active [GoDaddy Reseller Plan](https://www.godaddy.com/reseller-program). However, this package can be used in "demo mode", which provides full cart and purchase paths for the [Domains Priced Right](http://www.domainspricedright.com/) brand.
@@ -55,6 +57,14 @@ Example Usage
     data-text_select="Select"
     data-text_selected="Selected"
 >Domain Search</div>
+```
+
+## Browser Requirements
+
+Requires modern browsers. If you support older browsers (e.g. IE < 11), consider adding a polyfill script to the `<head>` block.
+
+```html
+<script src="https://cdn.polyfill.io/v2/polyfill.min.js"></script>
 ```
 
 ## Available Scripts

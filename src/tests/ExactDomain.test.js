@@ -1,5 +1,6 @@
 import React from 'react';
-import { shallow } from 'enzyme';
+import { configure, mount, shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import ExactDomain from '../ExactDomain';
 
 const props = {
@@ -8,6 +9,10 @@ const props = {
   domainCount: 0,
   cartClick: () => {}
 };
+
+beforeAll(() => {
+  configure({ adapter: new Adapter() });
+});
 
 describe('ExactDomain', () => {
   it('should render ExactDomain component with available domain', () => {

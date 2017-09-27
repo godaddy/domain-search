@@ -1,5 +1,6 @@
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { configure, mount, shallow } from 'enzyme';
+import Adapter from 'enzyme-adapter-react-16';
 import sinon from 'sinon';
 import DomainSearch from '../DomainSearch';
 import SearchResults from '../SearchResults';
@@ -12,6 +13,10 @@ const props = {
 };
 
 let sandbox;
+
+beforeAll(() => {
+  configure({ adapter: new Adapter() });
+});
 
 beforeEach(() => {
   sandbox = sinon.sandbox.create();
@@ -48,7 +53,7 @@ describe('DomainSearch', () => {
 
     sandbox.stub(util, 'fetch').callsFake(() => Promise.reject('error message'));
 
-    wrapper.ref('domainSearch').get(0).value = 'test.com';
+    wrapper.ref('domainSearch').value = 'test.com';
     wrapper.find('form').simulate('submit', { preventDefault() {} });
 
     setTimeout(() => {
@@ -65,7 +70,7 @@ describe('DomainSearch', () => {
       suggestedDomains: [{ domain }]
     }));
 
-    wrapper.ref('domainSearch').get(0).value = 'test.com';
+    wrapper.ref('domainSearch').value = 'test.com';
     wrapper.find('form').simulate('submit', { preventDefault() {} });
 
     setTimeout(() => {

@@ -101,12 +101,12 @@ hr {
 
 .rstore-message {
   display: inline-block;
-  height: 48px;
+  padding: 15px 0;
 }
 
 .rstore-message span.dashicons {
-  width: 28px;
-  height: 28px;
+  width: 18px;
+  height: 18px;
   font-size: 28px;
 }
 
@@ -211,7 +211,7 @@ hr {
   vertical-align: middle;
   vertical-align: -webkit-baseline-middle;
   word-break: break-word;
-  padding: 10px 0;
+  padding: 15px 0;
 }
 
 .rstore-domain-search .continue-block {

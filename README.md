@@ -16,7 +16,7 @@ You can view a demo of the domain search component at https://godaddy.github.io/
 
 - Make sure you have an active [GoDaddy Reseller Plan](https://www.godaddy.com/reseller-program), otherwise you will not be able to make commissions on any domain sales from your site.
 - If using with the [WordPress Storefront Plugin](https://github.com/godaddy/wp-reseller-store):
-  - Add `[rstore-domain-search]` to any post or page that you would like this to appear in.
+  - Add `[rstore_domain_search]` to any post or page that you would like this to appear in.
 - If using independently of WordPress (i.e. on your own custom storefront or site):
   - `npm i`
   - Update the global `rstore` variable in `public/index.html` with your `pl_id`. You will need to replace all occurrences of the value `1592`, otherwise all cart actions will be applied to that `pl_id` instead of yours.

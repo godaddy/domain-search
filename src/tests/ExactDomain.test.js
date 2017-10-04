@@ -31,4 +31,16 @@ describe('ExactDomain', () => {
     expect(wrapper.find('.rstore-exact-domain-list')).toHaveLength(1);
     expect(wrapper.find('.not-available')).toHaveLength(1);
   });
+
+  it('should render nothing when domain is not available and domains are selected', () => {
+    const unavailable = {
+      ...props,
+      available: false,
+      domainCount: 1
+    };
+    const wrapper = shallow(<ExactDomain {...unavailable} />);
+
+    expect(wrapper.find('.rstore-exact-domain-list')).toHaveLength(0);
+    expect(wrapper.find('.not-available')).toHaveLength(0);
+  });
 });

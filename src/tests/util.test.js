@@ -20,4 +20,15 @@ describe('util', () => {
 
     util.fetch('test.com', {});
   });
+
+  describe('Given empty response', () => {
+    it('should fetch url and return empty object', () => {
+      sandbox.stub(global, 'fetch').callsFake(() => Promise.resolve({
+        status: 200,
+        text: () => Promise.resolve('')
+      }));
+
+      util.fetch('test.com', {});
+    });
+  });
 });

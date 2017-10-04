@@ -1,6 +1,5 @@
 import React from 'react';
-import { configure, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { shallow } from 'enzyme';
 import App from '../App';
 
 const props = {
@@ -8,10 +7,6 @@ const props = {
   baseUrl: '',
   text: {}
 };
-
-beforeAll(() => {
-  configure({ adapter: new Adapter() });
-});
 
 describe('App', () => {
   it('should render App component', () => {

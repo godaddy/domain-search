@@ -1,6 +1,5 @@
 import React from 'react';
-import { configure, mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 import Domain from '../Domain';
 
@@ -15,10 +14,6 @@ const props = {
 };
 
 let sandbox;
-
-beforeAll(() => {
-  configure({ adapter: new Adapter() });
-});
 
 beforeEach(() => {
   sandbox = sinon.sandbox.create();

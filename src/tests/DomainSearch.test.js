@@ -1,6 +1,5 @@
 import React from 'react';
-import { configure, mount, shallow } from 'enzyme';
-import Adapter from 'enzyme-adapter-react-16';
+import { mount, shallow } from 'enzyme';
 import sinon from 'sinon';
 import DomainSearch from '../DomainSearch';
 import SearchResults from '../SearchResults';
@@ -13,10 +12,6 @@ const props = {
 };
 
 let sandbox;
-
-beforeAll(() => {
-  configure({ adapter: new Adapter() });
-});
 
 beforeEach(() => {
   sandbox = sinon.sandbox.create();
@@ -80,7 +75,7 @@ describe('DomainSearch', () => {
     expect(spy.called).toBeFalsy();
   });
 
-  it('should error if domain search fails', () => {
+  it('should error if domain search fails', (done) => {
     const wrapper = mount(<DomainSearch {...props} />);
 
     sandbox.stub(util, 'fetch').callsFake(() => Promise.reject('error message'));
@@ -89,26 +84,42 @@ describe('DomainSearch', () => {
     wrapper.find('form').simulate('submit', { preventDefault() {} });
 
     setTimeout(() => {
-      expect(wrapper.state('completed')).toEqual(true);
+      expect(wrapper.find('rstore-error'));
+      done();
     }, 50);
   });
 
-  it('should add suggested domains to state on form submission', () => {
+  it('should error if domain search returns error message', (done) => {
     const wrapper = mount(<DomainSearch {...props} />);
-    const domain = 'test.com';
+
+    sandbox.stub(util, 'fetch').callsFake(() => Promise.resolve({ error:{message:'error message'}}));
+
+    wrapper.ref('domainSearch').value = 'test.com';
+    wrapper.find('form').simulate('submit', { preventDefault() {} });
+
+    setTimeout(() => {
+      expect(wrapper.find('rstore-error'));
+      done();
+    }, 50);
+  });
+
+  it('should add suggested domains to state on form submission', (done) => {
+
+    const wrapper = mount(<DomainSearch {...props} />);
+    const domain = { domain: 'test.com', available: true, salePrice: '0', listPrice: '0' };
 
     sandbox.stub(util, 'fetch').callsFake(() => Promise.resolve({
-      exactMatchDomain: { domain },
-      suggestedDomains: [{ domain }]
+      exactMatchDomain: domain,
+      suggestedDomains: [domain]
     }));
 
     wrapper.ref('domainSearch').value = 'test.com';
     wrapper.find('form').simulate('submit', { preventDefault() {} });
 
     setTimeout(() => {
-      expect(wrapper.state('exactMatchDomain')).toEqual({ domain });
-      expect(wrapper.state('suggestedDomains')).toEqual([{ domain }]);
-      expect(wrapper.state('completed')).toEqual(true);
+      expect(wrapper.state('exactDomain')).toEqual(domain);
+      expect(wrapper.state('suggestedDomains')).toEqual([domain]);
+      done();
     }, 50);
   });
 
@@ -175,6 +186,44 @@ describe('DomainSearch', () => {
     wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
 
     expect(spy.called).toBeTruthy();
+  });
+
+  it('should add domain to state when domain is selected', (done) => {
+    const wrapper = mount(<DomainSearch {...props} />);
+
+    const exactDomainResult = { available: true, domain:'available.com', listPrice: '0.00', salePrice: '9.00' };
+    const suggestedDomainResult = { available: true, domain:'suggest.com', listPrice: '0.00', salePrice: '9.00' };
+
+    wrapper.setState({ exactDomain: exactDomainResult, suggestedDomains: [suggestedDomainResult] });
+
+
+    wrapper.find('.rstore-domain-buy-button').at(0).simulate('click', { preventDefault() {} });
+    wrapper.find('.rstore-domain-buy-button').at(1).simulate('click', { preventDefault() {} });
+
+    setTimeout(() => {
+      expect(wrapper.state('selectedDomains').length).toEqual(2);
+      done();
+    }, 50);
+
+  });
+
+  it('should remove domain from state when domain is un-selected', (done) => {
+    const wrapper = mount(<DomainSearch {...props} />);
+
+    const exactDomainResult = { available: true, domain:'available.com', listPrice: '0.00', salePrice: '9.00' };
+    const suggestedDomainResult = { available: true, domain:'suggest.com', listPrice: '0.00', salePrice: '9.00' };
+
+    wrapper.setState({ exactDomain: exactDomainResult, suggestedDomains: [suggestedDomainResult], selectedDomains: ['available.com'] });
+
+
+    wrapper.find('.rstore-domain-buy-button').at(0).simulate('click', { preventDefault() {} });
+    wrapper.find('.rstore-domain-buy-button').at(1).simulate('click', { preventDefault() {} });
+
+    setTimeout(() => {
+      expect(wrapper.state('selectedDomains').length).toEqual(1);
+      done();
+    }, 50);
+
   });
 
 });

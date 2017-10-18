@@ -22,7 +22,8 @@ export default class Domain extends Component {
     const {
       domain,
       listPrice,
-      salePrice
+      salePrice,
+      extendedValidation
     } = this.props.domainResult;
 
     const {
@@ -30,6 +31,8 @@ export default class Domain extends Component {
     } = this.state;
 
     let content;
+
+    const buttonText = extendedValidation ? this.props.text.verify : this.props.text.select;
 
     if (selected) {
       content = (
@@ -43,8 +46,8 @@ export default class Domain extends Component {
       content = (
         <div className="rstore-message">
           {listPrice !== salePrice && <span className="listPrice"><small><s>{listPrice}</s></small></span>}
-          <span className="salePrice"><strong>{salePrice}</strong></span>
-           <a className="rstore-domain-buy-button submit button select" onClick={this.handleSelectClick}>{this.props.text.select}</a>
+          <span className="salePrice"><strong>{salePrice}{extendedValidation && '*'}</strong></span>
+           <a className="rstore-domain-buy-button submit button select" onClick={this.handleSelectClick}>{buttonText}</a>
         </div>
       );
     }

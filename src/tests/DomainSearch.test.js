@@ -137,7 +137,7 @@ describe('DomainSearch', () => {
 
   it('should add exact domain when continue to cart button is clicked', () => {
     const wrapper = shallow(<DomainSearch {...props} />);
-    const spy = sandbox.spy(util, 'fetch');
+    const spy = sandbox.spy(util, 'fetchJsonp');
 
     wrapper.setState({
       searching: false,
@@ -155,69 +155,94 @@ describe('DomainSearch', () => {
     expect(spy.called).toBeTruthy();
   });
 
-  it('should add selected domains when continue to cart button is clicked', () => {
-    const wrapper = shallow(<DomainSearch {...props} />);
-    const spy = sandbox.stub(util, 'fetch').callsFake(() => Promise.resolve({ cartUrl: '#' }));
+  describe('Given continue to cart button is clicked', () => {
+    it('should add selected domains', () => {
+      const wrapper = shallow(<DomainSearch {...props} />);
+      const spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({ cartUrl: '#' }));
 
-    wrapper.setState({
-      selectedDomains: ['asdf.com'],
-      searching: false,
-      addingToCart: false,
-      exactDomain: {
-        available: true,
-        domain: '',
-        listPrice: '0.00'
-      },
-      suggestedDomains: []
+      wrapper.setState({
+        selectedDomains: ['asdf.com'],
+        searching: false,
+        addingToCart: false,
+        exactDomain: {
+          available: true,
+          domain: '',
+          listPrice: '0.00'
+        },
+        suggestedDomains: []
+      });
+
+      wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
+
+      expect(spy.called).toBeTruthy();
     });
 
-    wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
+    it('should set error in state when api has an error', () => {
+      const wrapper = shallow(<DomainSearch {...props} />);
+      const spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({
+        error: 'domain no longer available'
+      }));
 
-    expect(spy.called).toBeTruthy();
-  });
+      wrapper.setState({
+        selectedDomains: ['asdf.com'],
+        searching: false,
+        addingToCart: false,
+        exactDomain: {
+          available: true,
+          domain: '',
+          listPrice: '0.00'
+        },
+        suggestedDomains: []
+      });
 
-  it('should set error in state when continue to cart button is clicked and api has an error', () => {
-    const wrapper = shallow(<DomainSearch {...props} />);
-    const spy = sandbox.stub(util, 'fetch').callsFake(() => Promise.resolve({
-      error: 'domain no longer available'
-    }));
+      wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
 
-    wrapper.setState({
-      selectedDomains: ['asdf.com'],
-      searching: false,
-      addingToCart: false,
-      exactDomain: {
-        available: true,
-        domain: '',
-        listPrice: '0.00'
-      },
-      suggestedDomains: []
+      expect(spy.called).toBeTruthy();
     });
 
-    wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
+    it('should set error in state when network error occurred', () => {
+      const wrapper = shallow(<DomainSearch {...props} />);
+      const spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.reject({
+        error: 'domain no longer available'
+      }));
 
-    expect(spy.called).toBeTruthy();
-  });
+      wrapper.setState({
+        selectedDomains: ['asdf.com'],
+        searching: false,
+        addingToCart: false,
+        exactDomain: {
+          available: true,
+          domain: '',
+          listPrice: '0.00'
+        },
+        suggestedDomains: []
+      });
 
-  it('should do nothing when continue to cart button is clicked and there is no cartUrl and no error', () => {
-    const wrapper = shallow(<DomainSearch {...props} />);
-    const spy = sandbox.stub(util, 'fetch').callsFake(() => Promise.resolve({}));
+      wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
 
-    wrapper.setState({
-      selectedDomains: ['asdf.com'],
-      searching: false,
-      addingToCart: false,
-      exactDomain: {
-        available: true,
-        domain: '',
-        listPrice: '0.00'
-      },
-      suggestedDomains: []
+      expect(spy.called).toBeTruthy();
     });
 
-    wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
+    it('should do nothing when there is no cartUrl and no error', () => {
+      const wrapper = shallow(<DomainSearch {...props} />);
+      const spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({}));
 
-    expect(spy.called).toBeTruthy();
+      wrapper.setState({
+        selectedDomains: ['asdf.com'],
+        searching: false,
+        addingToCart: false,
+        exactDomain: {
+          available: true,
+          domain: '',
+          listPrice: '0.00'
+        },
+        suggestedDomains: []
+      });
+
+      wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
+
+      expect(spy.called).toBeTruthy();
+    });
   });
 
   it('should add domain to state when domain is selected', (done) => {
@@ -246,14 +271,31 @@ describe('DomainSearch', () => {
     wrapper.setState({
       exactDomain: exactDomainResult,
       suggestedDomains: [suggestedDomainResult],
-      selectedDomains: ['available.com']
+      selectedDomains: [exactDomainResult]
     });
 
     wrapper.find('.rstore-domain-buy-button').at(0).simulate('click', { preventDefault() {} });
     wrapper.find('.rstore-domain-buy-button').at(1).simulate('click', { preventDefault() {} });
-
     setTimeout(() => {
       expect(wrapper.state('selectedDomains').length).toEqual(1);
+
+      done();
+    }, 50);
+  });
+
+  it('should post domain to DPP when restricted domain is selected', (done) => {
+    const wrapper = mount(<DomainSearch {...props} />);
+
+    const exactDomainResult = { available: true, extendedValidation: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
+
+    const spy = sandbox.spy(util, 'postDomain');
+
+    wrapper.setState({ exactDomain: exactDomainResult, suggestedDomains: [] });
+
+    wrapper.find('.rstore-domain-buy-button').at(0).simulate('click', { preventDefault() {} });
+
+    setTimeout(() => {
+      expect(spy.called).toBeTruthy();
 
       done();
     }, 50);

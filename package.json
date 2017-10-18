@@ -42,6 +42,6 @@
     "react-scripts": "1.0.14",
     "react-test-renderer": "^16.0.0",
     "sinon": "^4.0.0",
-    "whatwg-fetch": "^2.0.3"
+    "fetch-jsonp": "^1.1.3"
   }
 }

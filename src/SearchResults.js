@@ -4,12 +4,10 @@ import Domain from './Domain';
 
 const SearchResults = ({ domains, text,  cartClick}) => {
   return (
-    <div>
-      <div className="rstore-domain-list">
-        {domains.map((domain, index) => {
-          return domain.available && (<Domain key={index} domainResult={domain} text={text} cartClick={cartClick}/>);
-        })}
-      </div>
+    <div className="rstore-domain-list">
+      {domains.map((domain, index) => {
+        return domain.available && (<Domain key={index} domainResult={domain} text={text} cartClick={cartClick}/>);
+      })}
     </div>
   );
 };

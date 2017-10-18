@@ -1,5 +1,6 @@
 import sinon from 'sinon';
 import util from '../util';
+import fetchJsonp from 'fetch-jsonp';
 
 let sandbox;
 
@@ -29,6 +30,12 @@ describe('util', () => {
       }));
 
       util.fetch('test.com', {});
+    });
+  });
+
+  describe('Given postDomain', () => {
+    it('should form post the domain to the url', () => {
+      util.postDomain('#', 'test.com');
     });
   });
 });

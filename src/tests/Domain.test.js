@@ -28,6 +28,15 @@ describe('Domain', () => {
     shallow(<Domain {...props} />);
   });
 
+  it('should render Domain component for restricted domains', () => {
+    const newProps = {
+      ...props,
+      domainResult: {extendedValidation: true}
+    };
+
+    shallow(<Domain {...newProps} />);
+  });
+
   it('should successfully add when domain is selected', () => {
     const wrapper = mount(<Domain {...props} />);
 

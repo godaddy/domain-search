@@ -71,6 +71,7 @@ export default class DomainSearch extends Component {
       baseUrl,
       plid
     } = this.props;
+
     const cartUrl = `https://storefront.api.${baseUrl}/api/v1/cart/${plid}/`;
     const items =[];
 
@@ -89,20 +90,26 @@ export default class DomainSearch extends Component {
 
   handleContinueClick(e) {
     e.preventDefault();
+
     const {
       baseUrl,
       plid
     } = this.props;
 
+    const {
+      selectedDomains,
+      exactDomain
+    } = this.state;
+
     this.setState({ addingToCart: true });
 
     let domains;
 
-    if (this.state.selectedDomains.length === 0 && this.state.exactDomain.available) {
-      domains = [this.state.exactDomain];
+    if (selectedDomains.length === 0 && exactDomain.available) {
+      domains = [exactDomain];
     }
     else {
-      domains = this.state.selectedDomains;
+      domains = selectedDomains;
     }
 
     this.addDomainsToCart(
@@ -130,18 +137,29 @@ export default class DomainSearch extends Component {
   }
 
   handleSelectClick(domainObj) {
-    const { selectedDomains } = this.state,
-      { domain, extendedValidation } = domainObj.props.domainResult,
-      { baseUrl, plid } = this.props;
+    const { selectedDomains } = this.state;
+
+    const {
+      domain,
+      extendedValidation
+    } = domainObj.props.domainResult;
+
+    const {
+      baseUrl,
+      plid
+    } = this.props;
 
     if (extendedValidation) {
-      this.setState({addingToCart: true})
+      this.setState({ addingToCart: true });
+
       const url = `https://www.${baseUrl}/domains/search.aspx?checkAvail=1&plid=${plid}`;
+
       return util.postDomain(url, domain);
     }
 
     const index = selectedDomains.indexOf(domainObj.props.domainResult);
     let newSelectDomains = [];
+
     if (index >= 0 ){
       newSelectDomains = [
         ...selectedDomains.slice(0, index),

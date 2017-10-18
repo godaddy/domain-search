@@ -206,6 +206,10 @@ hr {
   border: 3px solid #e8e8e8;
 }
 
+.rstore-domain-search .rstore-exact-domain-list h4.not-available {
+    margin: 15px 0 15px 0;
+}
+
 .rstore-domain-search .domain-name {
   display: inline-block;
   vertical-align: middle;
@@ -214,7 +218,7 @@ hr {
   padding: 10px 0;
 }
 
-.rstore-domain-search .continue-block {
+.rstore-domain-search .rstore-domain-continue-button {
   display: block;
   float: right;
 }
@@ -237,4 +241,8 @@ hr {
 
 .rstore-domain-search .rstore-domain-buy-button {
   margin-left: 10px;
+}
+
+.rstore-domain-search .rstore-disclaimer {
+  clear: both;
 }

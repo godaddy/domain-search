@@ -66,7 +66,7 @@ export default class DomainSearch extends Component {
       });
   }
 
-  addDomains(domains) {
+  addDomainsToCart(domains) {
     const {
       baseUrl,
       plid
@@ -74,39 +74,38 @@ export default class DomainSearch extends Component {
     const cartUrl = `https://storefront.api.${baseUrl}/api/v1/cart/${plid}/`;
     const items =[];
 
-    domains.forEach(domain => {
+    domains.forEach(item => {
       items.push({
         id: 'domain',
-        domain
+        domain: item.domain,
+        productId: item.productId
       });
     });
 
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify({ items })
-    };
+    var param = "?cart="+JSON.stringify({ items });
 
-    return util.fetch(cartUrl, options)
+    return util.fetchJsonp(cartUrl+param);
   }
 
   handleContinueClick(e) {
     e.preventDefault();
+    const {
+      baseUrl,
+      plid
+    } = this.props;
+
     this.setState({ addingToCart: true });
 
     let domains;
 
     if (this.state.selectedDomains.length === 0 && this.state.exactDomain.available) {
-      domains = [this.state.exactDomain.domain];
+      domains = [this.state.exactDomain];
     }
     else {
       domains = this.state.selectedDomains;
     }
 
-    this.addDomains(
+    this.addDomainsToCart(
       domains
     ).then(response => {
       if (response.cartUrl) {
@@ -120,9 +119,7 @@ export default class DomainSearch extends Component {
         });
       }
 
-      return this.setState({
-        addingToCart:false
-      });
+      return window.location.href = `https://cart.${baseUrl}/?plid=${plid}`
 
     }).catch(error => {
       this.setState({
@@ -134,8 +131,16 @@ export default class DomainSearch extends Component {
 
   handleSelectClick(domainObj) {
     const { selectedDomains } = this.state,
-      { domain } = domainObj.props.domainResult;
-    const index = selectedDomains.indexOf(domain);
+      { domain, extendedValidation } = domainObj.props.domainResult,
+      { baseUrl, plid } = this.props;
+
+    if (extendedValidation) {
+      this.setState({addingToCart: true})
+      const url = `https://www.${baseUrl}/domains/search.aspx?checkAvail=1&plid=${plid}`;
+      return util.postDomain(url, domain);
+    }
+
+    const index = selectedDomains.indexOf(domainObj.props.domainResult);
     let newSelectDomains = [];
     if (index >= 0 ){
       newSelectDomains = [
@@ -150,9 +155,10 @@ export default class DomainSearch extends Component {
     else {
       newSelectDomains = [
         ...selectedDomains,
-        domain
+        domainObj.props.domainResult
       ];
-       domainObj.setState({
+
+      domainObj.setState({
         selected: true,
       });
     }
@@ -181,9 +187,13 @@ export default class DomainSearch extends Component {
     }
     else if (exactDomain || suggestedDomains) {
       content = (
-        <div>
+        <div className="result-content">
           <div className="continue-block">
-            { ((domainCount || exactDomain.available) && !addingToCart) && <button type="button" className="rstore-domain-continue-button button" onClick={this.handleContinueClick} >{this.props.text.cart}</button>}
+            { (( domainCount ||
+              (exactDomain.available && !exactDomain.extendedValidation)) &&
+              !addingToCart &&
+              !error ) &&
+              <button type="button" className="rstore-domain-continue-button button" onClick={this.handleContinueClick} >{this.props.text.cart}</button>}
             { (addingToCart) && <div className="rstore-loading"></div>}
             { (error) && <div className="rstore-error">Error: {error}</div>}
           </div>
@@ -207,10 +217,9 @@ export default class DomainSearch extends Component {
               <button type="submit" className="rstore-domain-search-button submit button" disabled={searching}>{this.props.text.search}</button>
             </span>
           </div>
-          <div className="result-content">
-            {content}
-          </div>
         </div>
+        {content}
+        {(exactDomain || suggestedDomains) && (<div className="rstore-disclaimer"><pre>{this.props.text.disclaimer}</pre></div>)}
       </form>
     );
   }

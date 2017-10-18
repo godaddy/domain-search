@@ -15,7 +15,9 @@ Array.prototype.forEach.call(elements, element => {
     notAvailable: element.dataset.text_not_available || "Sorry, that domain is taken",
     cart: element.dataset.text_cart || "Continue to Cart",
     select: element.dataset.text_select || "Select",
-    selected: element.dataset.text_selected || "Selected"
+    selected: element.dataset.text_selected || "Selected",
+    verify: element.dataset.text_verify || "Verify",
+    disclaimer: element.dataset.text_disclaimer || "Taxes and ICANN fee not included in price displayed.\n*Additional charges and registration restrictions may apply."
   },
   baseUrl = element.dataset.base_url || "secureserver.net",
   pageSize = element.dataset.page_size || "5";

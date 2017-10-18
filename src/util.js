@@ -14,12 +14,12 @@ const fetchjsonp = url => fetchJsonp(url)
   });
 
 const postDomain = (url, domain) => {
-  var form = document.createElement('form');
+  const form = document.createElement('form');
   form.style.visibility = 'hidden';
   form.method = 'POST';
   form.action = url;
 
-  var input = document.createElement('input');
+  const input = document.createElement('input');
   input.name = 'domainToCheck';
   input.value = domain;
   form.appendChild(input);

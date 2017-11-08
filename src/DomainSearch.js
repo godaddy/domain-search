@@ -205,7 +205,7 @@ export default class DomainSearch extends Component {
     }
     else if (exactDomain || suggestedDomains) {
       content = (
-        <div className="result-content">
+        <div>
           <div className="continue-block">
             { (( domainCount ||
               (exactDomain.available && !exactDomain.extendedValidation)) &&
@@ -236,8 +236,10 @@ export default class DomainSearch extends Component {
             </span>
           </div>
         </div>
-        {content}
-        {(exactDomain || suggestedDomains) && (<div className="rstore-disclaimer"><pre>{this.props.text.disclaimer}</pre></div>)}
+        <div className="result-content">
+          {content}
+          {(exactDomain || suggestedDomains) && (<div className="rstore-disclaimer"><pre>{this.props.text.disclaimer}</pre></div>)}
+        </div>
       </form>
     );
   }

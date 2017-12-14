@@ -31,7 +31,7 @@ export default class DomainSearch extends Component {
       pageSize
     } = this.props;
 
-    const domainUrl = `https://storefront.api.${baseUrl}/api/v1/domains/${plid}/?pageSize=${pageSize}`
+    const domainUrl = `https://www.${baseUrl}/api/v1/domains/${plid}/?pageSize=${pageSize}`
 
     if (!this.refs.domainSearch.value) {
       return false;
@@ -72,7 +72,7 @@ export default class DomainSearch extends Component {
       plid
     } = this.props;
 
-    const cartUrl = `https://storefront.api.${baseUrl}/api/v1/cart/${plid}/`;
+    const cartUrl = `https://www.${baseUrl}/api/v1/cart/${plid}/`;
     const items =[];
 
     domains.forEach(item => {

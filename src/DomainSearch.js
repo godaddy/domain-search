@@ -23,8 +23,13 @@ export default class DomainSearch extends Component {
     this.state = initialState;
   };
 
-  handleDomainSearch(e) {
-    e.preventDefault();
+  componentDidMount() {
+    if (this.props.domainToCheck) {
+      this.search(this.props.domainToCheck);
+    }
+  }
+
+  search(domain) {
     const {
       baseUrl,
       plid,
@@ -32,10 +37,6 @@ export default class DomainSearch extends Component {
     } = this.props;
 
     const domainUrl = `https://storefront.api.${baseUrl}/api/v1/domains/${plid}/?pageSize=${pageSize}`
-
-    if (!this.refs.domainSearch.value) {
-      return false;
-    }
 
     this.setState({
       searching: true
@@ -47,7 +48,7 @@ export default class DomainSearch extends Component {
         'Content-Type': 'application/json'
       },
       credentials: 'include',
-      body: JSON.stringify({ domain: this.refs.domainSearch.value })
+      body: JSON.stringify({ domain })
     };
 
     util.fetch(domainUrl, options)
@@ -64,6 +65,13 @@ export default class DomainSearch extends Component {
           error: error.message
         });
       });
+  }
+
+  handleDomainSearch(e) {
+    e.preventDefault();
+    if (this.refs.domainSearch.value) {
+      this.search(this.refs.domainSearch.value);
+    }
   }
 
   addDomainsToCart(domains) {
@@ -230,7 +238,7 @@ export default class DomainSearch extends Component {
       <form onSubmit={this.handleDomainSearch}>
         <div className="search-box">
           <div className="input-group">
-            <input type="text" ref="domainSearch" className="search-field form-control" placeholder={this.props.text.placeholder} />
+            <input type="text" ref="domainSearch" className="search-field form-control" placeholder={this.props.text.placeholder} defaultValue={this.props.domainToCheck}/>
             <span className="input-group-btn">
               <button type="submit" className="rstore-domain-search-button submit button" disabled={searching}>{this.props.text.search}</button>
             </span>

@@ -12,7 +12,7 @@ Array.prototype.forEach.call(elements, element => {
     placeholder: element.dataset.text_placeholder || "Find your perfect domain name",
     search: element.dataset.text_search || "Search",
     available: element.dataset.text_available || "Congrats, your domain is available!",
-    notAvailable: element.dataset.text_not_available || "Sorry, that domain is taken",
+    notAvailable: element.dataset.text_not_available || "Sorry, {domain_name} is taken.",
     cart: element.dataset.text_cart || "Continue to Cart",
     select: element.dataset.text_select || "Select",
     selected: element.dataset.text_selected || "Selected",

@@ -40,11 +40,13 @@ The domain search component is internationalizable. To change any of the strings
 data-text_placeholder="Find your perfect domain name"
 data-text_search="Search"
 data-text_available="Congrats, your domain is available!"
-data-text_not_available="Sorry that domain is taken"
+data-text_not_available="Sorry, {domain_name} is taken."
 data-text_cart="Continue to Cart"
 data-text_select="Select"
 data-text_selected="Selected"
 ```
+
+`data-text_not_available` field supports text substitution, {domain_name} in the provided text will be replaced by the actual domain name searched.
 
 Example Usage
 ```html
@@ -52,7 +54,7 @@ Example Usage
     data-text_placeholder="Find your perfect domain name"
     data-text_search="Search"
     data-text_available="Congrats, your domain is available!"
-    data-text_not_available="Sorry that domain is taken"
+    data-text_not_available="Sorry, {domain_name} is taken."
     data-text_cart="Continue to Cart"
     data-text_select="Select"
     data-text_selected="Selected"

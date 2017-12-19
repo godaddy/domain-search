@@ -21,7 +21,7 @@ const ExactDomain = (props) => {
   }
   else {
     if (domainCount === 0 ) {
-      const notAvailableText = text.notAvailable ? text.notAvailable.replace('{domain_name}', domainResult.domain) : '';
+      const notAvailableText = text.notAvailable ? text.notAvailable.replace('{domain_name}', domainResult.domain) : `Sorry, ${domainResult.domain} is taken.`;
 
       content = (
         <div className="rstore-exact-domain-list" >

@@ -3,6 +3,7 @@ import 'whatwg-fetch';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import queryString from 'query-string';
 
 const elements = document.getElementsByClassName('rstore-domain-search');
 Array.prototype.forEach.call(elements, element => {
@@ -20,10 +21,11 @@ Array.prototype.forEach.call(elements, element => {
     disclaimer: element.dataset.text_disclaimer || "Taxes and ICANN fee not included in price displayed.\n*Additional charges and registration restrictions may apply."
   },
   baseUrl = element.dataset.base_url || "secureserver.net",
-  pageSize = element.dataset.page_size || "5";
+  pageSize = element.dataset.page_size || "5",
+  parsed = queryString.parse(window.location.search);
 
   return ReactDOM.render(
-    <App text={text} plid={element.dataset.plid} baseUrl={baseUrl} pageSize={pageSize} />,
+    <App text={text} plid={element.dataset.plid} baseUrl={baseUrl} pageSize={pageSize} domainToCheck={parsed.domainToCheck}/>,
     element
   );
 });

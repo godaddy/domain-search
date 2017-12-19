@@ -26,6 +26,17 @@ describe('DomainSearch', () => {
     shallow(<DomainSearch {...props} />);
   });
 
+  it('should set domain when domainToCheck prop is set', () => {
+    const newProps = {
+      ...props,
+      domainToCheck: 'testdomain.com'
+    }
+
+    const wrapper = shallow(<DomainSearch {...newProps} />);
+
+    expect(wrapper.find('.search-field').props().defaultValue).toEqual('testdomain.com');
+  });
+
   it('should render spinner when searching', () => {
     const wrapper = shallow(<DomainSearch {...props} />);
 

@@ -39,21 +39,21 @@ The domain search component is internationalizable. To change any of the strings
 ```
 data-text_placeholder="Find your perfect domain name"
 data-text_search="Search"
-data-text_available="Congrats, your domain is available!"
+data-text_available="Congrats, {domain_name} is available!"
 data-text_not_available="Sorry, {domain_name} is taken."
 data-text_cart="Continue to Cart"
 data-text_select="Select"
 data-text_selected="Selected"
 ```
 
-`data-text_not_available` field supports text substitution, {domain_name} in the provided text will be replaced by the actual domain name searched.
+`data-text_available` and `data-text_not_available` fields support text substitution, {domain_name} in the provided text will be replaced by the actual domain name searched.
 
 Example Usage
 ```html
 <div class="rstore-domain-search" data-plid='1592'
     data-text_placeholder="Find your perfect domain name"
     data-text_search="Search"
-    data-text_available="Congrats, your domain is available!"
+    data-text_available="Congrats, {domain_name} is available!"
     data-text_not_available="Sorry, {domain_name} is taken."
     data-text_cart="Continue to Cart"
     data-text_select="Select"

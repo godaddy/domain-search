@@ -240,7 +240,7 @@ export default class DomainSearch extends Component {
           <div className="input-group">
             <input type="text" ref="domainSearch" className="search-field form-control" placeholder={this.props.text.placeholder} defaultValue={this.props.domainToCheck}/>
             <span className="input-group-btn">
-              <button type="submit" className="rstore-domain-search-button submit button" disabled={searching}>{this.props.text.search}</button>
+              <button type="submit" className="rstore-domain-search-button submit button btn btn-primary" disabled={searching}>{this.props.text.search}</button>
             </span>
           </div>
         </div>

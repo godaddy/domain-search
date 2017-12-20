@@ -219,7 +219,7 @@ export default class DomainSearch extends Component {
               (exactDomain.available && !exactDomain.extendedValidation)) &&
               !addingToCart &&
               !error ) &&
-              <button type="button" className="rstore-domain-continue-button button" onClick={this.handleContinueClick} >{this.props.text.cart}</button>}
+              <button type="button" className="rstore-domain-continue-button button btn btn-primary" onClick={this.handleContinueClick} >{this.props.text.cart}</button>}
             { (addingToCart) && <div className="rstore-loading"></div>}
             { (error) && <div className="rstore-error">Error: {error}</div>}
           </div>

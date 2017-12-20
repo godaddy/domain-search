@@ -38,7 +38,7 @@ export default class Domain extends Component {
       content = (
         <div className="rstore-message">
           <span className="dashicons dashicons-yes rstore-success"></span>
-          <a className="rstore-domain-buy-button submit button selected" onClick={this.handleSelectClick}>{this.props.text.selected}</a>
+          <a className="rstore-domain-buy-button submit button selected btn btn-default" onClick={this.handleSelectClick}>{this.props.text.selected}</a>
         </div>
       );
     }
@@ -47,7 +47,7 @@ export default class Domain extends Component {
         <div className="rstore-message">
           {listPrice !== salePrice && <span className="listPrice"><small><s>{listPrice}</s></small></span>}
           <span className="salePrice"><strong>{salePrice}{extendedValidation && '*'}</strong></span>
-           <a className="rstore-domain-buy-button submit button select" onClick={this.handleSelectClick}>{buttonText}</a>
+           <a className="rstore-domain-buy-button submit button select btn btn-default" onClick={this.handleSelectClick}>{buttonText}</a>
         </div>
       );
     }

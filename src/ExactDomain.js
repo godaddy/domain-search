@@ -4,9 +4,11 @@ import Domain from './Domain';
 
 const ExactDomain = (props) => {
   const {
+    continueClick,
     domainResult,
     text,
-    domainCount
+    domainCount,
+    showButton
   } = props;
 
   let content = null;
@@ -16,8 +18,11 @@ const ExactDomain = (props) => {
 
     content = (
       <div className="rstore-exact-domain-list">
+        { (( domainCount ||
+          (domainResult.available && !domainResult.extendedValidation)) && showButton ) &&
+          <button type="button" className="rstore-domain-continue-button button btn btn-primary" onClick={continueClick} >{text.cart}</button>}
         <h4 className="available">{availableText}</h4>
-        <Domain {...props} />
+        {<Domain {...props} />}
       </div>
     );
   }
@@ -40,7 +45,9 @@ ExactDomain.propTypes = {
   domainResult: PropTypes.object.isRequired,
   text: PropTypes.object.isRequired,
   cartClick: PropTypes.func.isRequired,
-  domainCount: PropTypes.number.isRequired
+  continueClick: PropTypes.func.isRequired,
+  domainCount: PropTypes.number.isRequired,
+  showButton: PropTypes.bool.isRequired
 }
 
 export default ExactDomain;

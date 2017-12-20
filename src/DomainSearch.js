@@ -97,7 +97,8 @@ export default class DomainSearch extends Component {
   }
 
   handleContinueClick(e) {
-    e.preventDefault();
+    // istanbul ignore next
+    e && e.preventDefault();
 
     const {
       baseUrl,
@@ -214,16 +215,16 @@ export default class DomainSearch extends Component {
     else if (exactDomain || suggestedDomains) {
       content = (
         <div>
-          <div className="continue-block">
-            { (( domainCount ||
-              (exactDomain.available && !exactDomain.extendedValidation)) &&
-              !addingToCart &&
-              !error ) &&
-              <button type="button" className="rstore-domain-continue-button button btn btn-primary" onClick={this.handleContinueClick} >{this.props.text.cart}</button>}
-            { (addingToCart) && <div className="rstore-loading"></div>}
-            { (error) && <div className="rstore-error">Error: {error}</div>}
-          </div>
-          <ExactDomain domainResult={exactDomain} cartClick={(domain) => this.handleSelectClick(domain)} text={this.props.text} domainCount={domainCount} />
+          { (addingToCart) && <div className="rstore-loading"></div>}
+          { (error) && <div className="rstore-error">Error: {error}</div>}
+          <ExactDomain
+            domainResult={exactDomain}
+            cartClick={(domain) => this.handleSelectClick(domain)}
+            continueClick={() => this.handleContinueClick()}
+            text={this.props.text}
+            domainCount={domainCount}
+            showButton={ !error && !addingToCart}
+            />
           <SearchResults domains={suggestedDomains} cartClick={(domain) => this.handleSelectClick(domain)} text={this.props.text} />
         </div>
       );

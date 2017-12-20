@@ -4,9 +4,11 @@ import Domain from './Domain';
 
 const ExactDomain = (props) => {
   const {
+    continueClick,
     domainResult,
     text,
-    domainCount
+    domainCount,
+    showButton
   } = props;
 
   let content = null;
@@ -16,8 +18,11 @@ const ExactDomain = (props) => {
 
     content = (
       <div className="rstore-exact-domain-list">
-        <h4 className="available">{availableText}</h4>
-        <Domain {...props} />
+        { (( domainCount ||
+          (domainResult.available && !domainResult.extendedValidation)) && showButton ) &&
+          <button type="button" className="rstore-domain-continue-button button btn btn-primary" onClick={continueClick} >{text.cart}</button>}
+        <p className="available">{availableText}</p>
+        {<Domain {...props} />}
       </div>
     );
   }
@@ -27,7 +32,14 @@ const ExactDomain = (props) => {
 
       content = (
         <div className="rstore-exact-domain-list" >
-          <h4 className="not-available">{notAvailableText}</h4>
+          <p className="not-available">{notAvailableText}</p>
+        </div>
+      );
+    }
+    else {
+      content = (
+        <div className="rstore-exact-domain-list" >
+          <button type="button" className="rstore-domain-continue-button button btn btn-primary" onClick={continueClick} >{text.cart}</button>
         </div>
       );
     }
@@ -40,7 +52,9 @@ ExactDomain.propTypes = {
   domainResult: PropTypes.object.isRequired,
   text: PropTypes.object.isRequired,
   cartClick: PropTypes.func.isRequired,
-  domainCount: PropTypes.number.isRequired
+  continueClick: PropTypes.func.isRequired,
+  domainCount: PropTypes.number.isRequired,
+  showButton: PropTypes.bool.isRequired
 }
 
 export default ExactDomain;

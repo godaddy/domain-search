@@ -52,7 +52,6 @@ export default class Domain extends Component {
       );
     }
 
-    // istanbul ignore else
     if (domain && listPrice) {
       return (
         <div className="domain-result">
@@ -65,6 +64,8 @@ export default class Domain extends Component {
         </div>
       );
     }
+
+    return(<div></div>);
   }
 }
 

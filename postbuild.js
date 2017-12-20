@@ -18,7 +18,7 @@ fs.readFile(src+file, 'utf8', (err, data) => {
     process.exit(1);
   }
 
-  let version = `/*!\n* domain-search v${process.env.npm_package_version}\n* Licensed under MIT\n* https://github.com/godaddy/domain-search/blob/master/LICENSE\n*/\n`;
+  let version = `/*!\n* domain-search v${process.env.npm_package_version}\n* Licensed under MIT\n*/\n`;
 
   let result = data.split('//# sourceMappingURL');
 

@@ -21,7 +21,7 @@ const ExactDomain = (props) => {
         { (( domainCount ||
           (domainResult.available && !domainResult.extendedValidation)) && showButton ) &&
           <button type="button" className="rstore-domain-continue-button button btn btn-primary" onClick={continueClick} >{text.cart}</button>}
-        <h4 className="available">{availableText}</h4>
+        <p className="available">{availableText}</p>
         {<Domain {...props} />}
       </div>
     );
@@ -32,7 +32,14 @@ const ExactDomain = (props) => {
 
       content = (
         <div className="rstore-exact-domain-list" >
-          <h4 className="not-available">{notAvailableText}</h4>
+          <p className="not-available">{notAvailableText}</p>
+        </div>
+      );
+    }
+    else {
+      content = (
+        <div className="rstore-exact-domain-list" >
+          <button type="button" className="rstore-domain-continue-button button btn btn-primary" onClick={continueClick} >{text.cart}</button>
         </div>
       );
     }

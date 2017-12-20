@@ -7,7 +7,10 @@ import util from '../util';
 
 const props = {
   plid: '123',
-  text: {},
+  text: {
+    available: '',
+    notAvailable: ''
+  },
   baseUrl: 'secureserver.net'
 };
 

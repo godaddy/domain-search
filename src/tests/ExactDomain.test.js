@@ -4,7 +4,10 @@ import ExactDomain from '../ExactDomain';
 
 const props = {
   domainResult:{},
-  text: {},
+  text: {
+    available: '',
+    notAvailable: 'Sorry, {domain_name} is taken.'
+  },
   domainCount: 0,
   cartClick: () => {}
 };
@@ -13,7 +16,11 @@ describe('ExactDomain', () => {
   it('should render ExactDomain component with available domain', () => {
      const available = {
       ...props,
-      available: true
+      available: true,
+      text: {
+        available: 'Congratulations, {domain_name} is available.',
+        notAvailable: ''
+      }
     };
 
     const wrapper = shallow(<ExactDomain {...available} />);

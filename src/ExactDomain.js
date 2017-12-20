@@ -12,7 +12,7 @@ const ExactDomain = (props) => {
   let content = null;
 
   if (domainResult.available) {
-    const availableText = text.available ? text.available.replace('{domain_name}', domainResult.domain) : `Congrats, ${domainResult.domain} is available!`;
+    const availableText = text.available.replace('{domain_name}', domainResult.domain);
 
     content = (
       <div className="rstore-exact-domain-list">
@@ -23,7 +23,7 @@ const ExactDomain = (props) => {
   }
   else {
     if (domainCount === 0 ) {
-      const notAvailableText = text.notAvailable ? text.notAvailable.replace('{domain_name}', domainResult.domain) : `Sorry, ${domainResult.domain} is taken.`;
+      const notAvailableText = text.notAvailable.replace('{domain_name}', domainResult.domain);
 
       content = (
         <div className="rstore-exact-domain-list" >

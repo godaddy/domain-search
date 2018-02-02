@@ -110,6 +110,23 @@ This app is open source! That means we want your contributions!
 2. Log bugs, issues, and questions on [Github](https://github.com/resellers/domain-search/issues).
 3. Create pull-requests and help us make it better!
 
+## Changelog
+  - v2.1.6
+    - Update api endpoint
+
+  - v2.1.4
+    - Add continue to cart button
+    - Update UX 
+
+  - v2.1.3
+    - Include full domain on taken search results
+  
+  - v2.1.0
+    - Upgrade to React 16
+  
+  - v2.0.0 
+    - Initial Release
+
 ## Contributors
 
 - [Chris Beresford](https://github.com/cberesford)

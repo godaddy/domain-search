@@ -206,8 +206,12 @@ hr {
   border: 3px solid #e8e8e8;
 }
 
-.rstore-domain-search .rstore-exact-domain-list h4.not-available {
-    margin: 15px 0 15px 0;
+
+.rstore-domain-search .rstore-exact-domain-list p.available,
+.rstore-domain-search .rstore-exact-domain-list p.not-available {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin: 10px 0 15px;
 }
 
 .rstore-domain-search .domain-name {
@@ -245,4 +249,15 @@ hr {
 
 .rstore-domain-search .rstore-disclaimer {
   clear: both;
+}
+
+.rstore-domain-search .rstore-disclaimer pre {
+  font-family: sans-serif;
+  background: none;
+  border: none;
+  font-size: 10px;
+  font-weight: 100;
+  margin: 0px;
+  padding: 0px;
+  white-space: pre-wrap;
 }

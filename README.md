@@ -21,7 +21,7 @@ You can view a demo of the domain search component at https://godaddy.github.io/
   - `npm i`
   - Update the global `rstore` variable in `public/index.html` with your `pl_id`. You will need to replace all occurrences of the value `1592`, otherwise all cart actions will be applied to that `pl_id` instead of yours.
   - `npm start` - the app will run on port 3000 by default. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-  - Please visit [https://storefront.api.secureserver.net/api/explore/](https://storefront.api.secureserver.net/api/explore/) for the official Storefront API documentation.
+  - Please visit [https://www.secureserver.net/api/explore/](https://www.secureserver.net/api/explore/) for the official Storefront API documentation.
 
 ## Usage
 - Add the following HTML to the page that you want the domain search component to appear on. The compiled JS is located in `dist/index.js`.

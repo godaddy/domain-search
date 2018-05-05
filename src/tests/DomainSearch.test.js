@@ -51,7 +51,7 @@ describe('DomainSearch', () => {
   it('should render spinner when adding to cart', () => {
     const wrapper = shallow(<DomainSearch {...props} />);
 
-    wrapper.setState({ searching: false, addingToCart: true, exactDomain: { available: true }, suggestedDomains: [] });
+    wrapper.setState({ searching: false, addingToCart: true, results: { exactMatchDomain: { available: true } } });
 
     expect(wrapper.find('.rstore-loading')).toHaveLength(1);
   });
@@ -115,15 +115,16 @@ describe('DomainSearch', () => {
 
     sandbox.stub(util, 'fetch').callsFake(() => Promise.resolve({
       exactMatchDomain: domain,
-      suggestedDomains: [domain]
+      suggestedDomains: [domain],
+      disclaimer: 'disclaimer'
     }));
 
     wrapper.ref('domainSearch').value = 'test.com';
     wrapper.find('form').simulate('submit', { preventDefault() {} });
 
     setTimeout(() => {
-      expect(wrapper.state('exactDomain')).toEqual(domain);
-      expect(wrapper.state('suggestedDomains')).toEqual([domain]);
+      expect(wrapper.state('results').exactMatchDomain).toEqual(domain);
+      expect(wrapper.state('results').suggestedDomains).toEqual([domain]);
       done();
     }, 50);
   });
@@ -131,9 +132,11 @@ describe('DomainSearch', () => {
   it('should give domain results after searching', () => {
     const wrapper = shallow(<DomainSearch {...props} />);
     const searchProps = {
-      domains: [],
+      results: {},
       cartClick: () => {},
-      text: {}
+      text: {},
+      plid: '',
+      baseUrl: ''
     };
 
     wrapper.setState({ searching: true, completed: true });
@@ -148,12 +151,14 @@ describe('DomainSearch', () => {
     wrapper.setState({
       searching: false,
       addingToCart: false,
-      exactDomain: {
-        available: true,
-        domain: '',
-        listPrice: '0.00'
-      },
-      suggestedDomains: []
+      results: {
+        exactMatchDomain: {
+          available: true,
+          domain: '',
+          listPrice: '0.00'
+        },
+        suggestedDomains: []
+      }
     });
 
     wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
@@ -171,12 +176,14 @@ describe('DomainSearch', () => {
         error: '',
         searching: false,
         addingToCart: false,
-        exactDomain: {
-          available: true,
-          domain: '',
-          listPrice: '0.00'
-        },
-        suggestedDomains: []
+        results: {
+          exactDomain: {
+            available: true,
+            domain: '',
+            listPrice: '0.00'
+          },
+          suggestedDomains: []
+        }
       });
 
       wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
@@ -194,12 +201,15 @@ describe('DomainSearch', () => {
         selectedDomains: ['asdf.com'],
         searching: false,
         addingToCart: false,
-        exactDomain: {
-          available: true,
-          domain: '',
-          listPrice: '0.00'
+        results: {
+          exactMatchDomain: {
+            available: true,
+            domain: '',
+            listPrice: '0.00'
+          },
+          suggestedDomains: []
         },
-        suggestedDomains: []
+        error: 'an error has occurred'
       });
 
       wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
@@ -217,12 +227,14 @@ describe('DomainSearch', () => {
         selectedDomains: ['asdf.com'],
         searching: false,
         addingToCart: false,
-        exactDomain: {
-          available: true,
-          domain: '',
-          listPrice: '0.00'
-        },
-        suggestedDomains: []
+        results: {
+          exactDomain: {
+            available: true,
+            domain: '',
+            listPrice: '0.00'
+          },
+          suggestedDomains: []
+        }
       });
 
       wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
@@ -238,12 +250,14 @@ describe('DomainSearch', () => {
         selectedDomains: ['asdf.com'],
         searching: false,
         addingToCart: false,
-        exactDomain: {
-          available: true,
-          domain: '',
-          listPrice: '0.00'
-        },
-        suggestedDomains: []
+        results: {
+          exactDomain: {
+            available: true,
+            domain: '',
+            listPrice: '0.00'
+          },
+          suggestedDomains: []
+        }
       });
 
       wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
@@ -258,7 +272,7 @@ describe('DomainSearch', () => {
     const exactDomainResult = { available: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
     const suggestedDomainResult = { available: true, domain: 'suggest.com', listPrice: '0.00', salePrice: '9.00' };
 
-    wrapper.setState({ exactDomain: exactDomainResult, suggestedDomains: [suggestedDomainResult] });
+    wrapper.setState({results: { exactMatchDomain: exactDomainResult, suggestedDomains: [suggestedDomainResult] } });
 
     wrapper.find('.rstore-domain-buy-button').at(0).simulate('click', { preventDefault() {} });
     wrapper.find('.rstore-domain-buy-button').at(1).simulate('click', { preventDefault() {} });
@@ -276,8 +290,10 @@ describe('DomainSearch', () => {
     const suggestedDomainResult = { available: true, domain: 'suggest.com', listPrice: '0.00', salePrice: '9.00' };
 
     wrapper.setState({
-      exactDomain: exactDomainResult,
-      suggestedDomains: [suggestedDomainResult],
+      results: {
+        exactMatchDomain: exactDomainResult,
+        suggestedDomains: [suggestedDomainResult]
+      },
       selectedDomains: [exactDomainResult]
     });
 
@@ -285,24 +301,6 @@ describe('DomainSearch', () => {
     wrapper.find('.rstore-domain-buy-button').at(1).simulate('click', { preventDefault() {} });
     setTimeout(() => {
       expect(wrapper.state('selectedDomains').length).toEqual(1);
-
-      done();
-    }, 50);
-  });
-
-  it('should post domain to DPP when restricted domain is selected', (done) => {
-    const wrapper = mount(<DomainSearch {...props} />);
-
-    const exactDomainResult = { available: true, extendedValidation: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
-
-    const spy = sandbox.spy(util, 'postDomain');
-
-    wrapper.setState({ exactDomain: exactDomainResult, suggestedDomains: [] });
-
-    wrapper.find('.rstore-domain-buy-button').at(0).simulate('click', { preventDefault() {} });
-
-    setTimeout(() => {
-      expect(spy.called).toBeTruthy();
 
       done();
     }, 50);

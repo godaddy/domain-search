@@ -10,7 +10,9 @@ const props = {
     salePrice: '$7.99'
   },
   cartClick: () => {},
-  text: {}
+  text: {},
+  plid: '1592',
+  baseUrl: 'secureserver.net'
 };
 
 let sandbox;
@@ -29,6 +31,15 @@ describe('Domain', () => {
   });
 
   it('should render Domain component for restricted domains', () => {
+    const newProps = {
+      ...props,
+      domainResult: {extendedValidation: true, listPrice: '$7.99'}
+    };
+
+    shallow(<Domain {...newProps} />);
+  });
+
+  it('should render Domain component for restricted domains not on sales', () => {
     const newProps = {
       ...props,
       domainResult: {extendedValidation: true}

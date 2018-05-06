@@ -8,9 +8,7 @@ const props = {
     suggestedDomains: []
   },
   cartClick: () => {},
-  text: {},
-  plid: '1592',
-  baseUrl: 'secureserver.net'
+  text: {}
 };
 
 describe('SearchResults', () => {

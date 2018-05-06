@@ -14,11 +14,11 @@ const SearchResults = ({ results, cartClick, plid, text, baseUrl}) => {
     <div>
       <ExactDomain domainResult={exactMatchDomain} text={text} />
       <div className="rstore-exact-domain-list">
-        <Domain domainResult={exactMatchDomain} text={text} cartClick={cartClick} plid={plid} baseUrl={baseUrl}/>
+        <Domain domainResult={exactMatchDomain} text={text} cartClick={cartClick}/>
       </div>
       <div className="rstore-domain-list">
         {suggestedDomains && suggestedDomains.map((domainResult, index) => {
-          return domainResult.available && (<Domain key={index} domainResult={domainResult} text={text} cartClick={cartClick} plid={plid} baseUrl={baseUrl}/>);
+          return domainResult.available && (<Domain key={index} domainResult={domainResult} text={text} cartClick={cartClick}/>);
         })}
       </div>
       <div className="rstore-disclaimer"><pre>{disclaimer}</pre></div>
@@ -29,9 +29,7 @@ const SearchResults = ({ results, cartClick, plid, text, baseUrl}) => {
 SearchResults.propTypes = {
   results: PropTypes.object.isRequired,
   cartClick: PropTypes.func.isRequired,
-  plid: PropTypes.string.isRequired,
-  text: PropTypes.object.isRequired,
-  baseUrl: PropTypes.string.isRequired
+  text: PropTypes.object.isRequired
 }
 
 export default SearchResults;

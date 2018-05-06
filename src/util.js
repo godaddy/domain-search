@@ -1,16 +1,13 @@
 import fetchJsonp from 'fetch-jsonp';
 
-const fetch = (url, options) => global.fetch(url, options)
-  .then(response => {
-    return response.text().then( text => {
-      return text ? JSON.parse(text) : {};
-    });
-  });
-
 // istanbul ignore next
-const fetchjsonp = url => fetchJsonp(url)
-  .then(response => {
-    return response.json();
-  });
+const fetchjsonp = (location, params) => {
+  var url = new URL(location);
+  Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+  return fetchJsonp(url.href, { timeout: 15000 })
+    .then(response => {
+      return response.json();
+    });
+  }
 
-export default { fetch, fetchJsonp: fetchjsonp };
+export default { fetchJsonp: fetchjsonp };

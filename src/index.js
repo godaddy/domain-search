@@ -1,4 +1,4 @@
-import 'whatwg-fetch';
+import 'url-polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
@@ -16,8 +16,7 @@ Array.prototype.forEach.call(elements, element => {
     notAvailable: element.dataset.text_not_available || "Sorry, {domain_name} is taken.",
     cart: element.dataset.text_cart || "Continue to Cart",
     select: element.dataset.text_select || "Select",
-    selected: element.dataset.text_selected || "Selected",
-    verify: element.dataset.text_verify || "Verify"
+    selected: element.dataset.text_selected || "Selected"
   },
   baseUrl = element.dataset.base_url || "secureserver.net",
   pageSize = element.dataset.page_size || "5",

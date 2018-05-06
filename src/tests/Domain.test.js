@@ -10,9 +10,7 @@ const props = {
     salePrice: '$7.99'
   },
   cartClick: () => {},
-  text: {},
-  plid: '1592',
-  baseUrl: 'secureserver.net'
+  text: {}
 };
 
 let sandbox;

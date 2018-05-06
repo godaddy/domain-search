@@ -5,18 +5,10 @@ export default class Domain extends Component {
   constructor() {
     super(...arguments);
 
-    this.handleSelectClick = this.handleSelectClick.bind(this);
-
     this.state = {
       selected: false
     };
   };
-
-  handleSelectClick(e) {
-    e.preventDefault();
-    this.props.cartClick(this);
-    return false;
-  }
 
   render() {
     const {
@@ -24,35 +16,21 @@ export default class Domain extends Component {
       listPrice,
       salePrice,
       extendedValidation,
+      disclaimer
     } = this.props.domainResult;
 
     const {
-      baseUrl,
-      plid,
-      text
+      text,
+      cartClick
     } = this.props;
-
-    const {
-      selected,
-    } = this.state;
 
     let content;
 
-    if (extendedValidation) {
-      const url = `https://www.${baseUrl}/products/domain-registration/find?plid=${plid}&domainToCheck=${domain}`;
-      content = (
-       <div className="rstore-message">
-          {listPrice !== salePrice && <span className="listPrice"><small><s>{listPrice}</s></small></span>}
-          <span className="salePrice"><strong>{salePrice}{extendedValidation && '*'}</strong></span>
-           <a className="rstore-domain-buy-button submit button select btn btn-default" href={url}>{text.verify}</a>
-        </div>
-      );
-    }
-    else if (selected) {
+    if (this.state.selected) {
       content = (
         <div className="rstore-message">
           <span className="dashicons dashicons-yes rstore-success"></span>
-          <a className="rstore-domain-buy-button submit button selected btn btn-default" onClick={this.handleSelectClick}>{text.selected}</a>
+          <a className="rstore-domain-buy-button submit button selected btn btn-default" onClick={()=>cartClick(this)}>{text.selected}</a>
         </div>
       );
     }
@@ -60,8 +38,8 @@ export default class Domain extends Component {
       content = (
         <div className="rstore-message">
           {listPrice !== salePrice && <span className="listPrice"><small><s>{listPrice}</s></small></span>}
-          <span className="salePrice"><strong>{salePrice}</strong></span>
-           <a className="rstore-domain-buy-button submit button select btn btn-default" onClick={this.handleSelectClick}>{text.select}</a>
+          <span className="salePrice"><strong>{salePrice}{extendedValidation && '*'}</strong></span>
+           <a className="rstore-domain-buy-button submit button select btn btn-secondary" onClick={()=>cartClick(this)}>{text.select}</a>
         </div>
       );
     }
@@ -71,6 +49,7 @@ export default class Domain extends Component {
         <div className="domain-result">
           <div className="domain-name">
             {domain}
+            <span className="rstore-disclaimer"><pre>{disclaimer}</pre></span>
           </div>
           <div className="purchase-info">
             {content}
@@ -86,7 +65,5 @@ export default class Domain extends Component {
 Domain.propTypes = {
   domainResult: PropTypes.object.isRequired,
   text: PropTypes.object.isRequired,
-  cartClick: PropTypes.func.isRequired,
-  plid: PropTypes.string.isRequired,
-  baseUrl: PropTypes.string.isRequired
+  cartClick: PropTypes.func.isRequired
 }

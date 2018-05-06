@@ -10,13 +10,15 @@ const initialState = {
   addingToCart: false,
   error: '',
   selectedDomains: [],
-  hasError: false
+  hasError: false,
+  domain: ''
 };
 
 export default class DomainSearch extends Component {
   constructor() {
     super(...arguments);
 
+    this.handleChange = this.handleChange.bind(this);
     this.handleDomainSearch = this.handleDomainSearch.bind(this);
     this.handleContinueClick = this.handleContinueClick.bind(this);
 
@@ -25,34 +27,29 @@ export default class DomainSearch extends Component {
 
   componentDidMount() {
     if (this.props.domainToCheck) {
+      this.setState({domain: this.props.domainToCheck});
       this.search(this.props.domainToCheck);
     }
   }
 
-  search(domain) {
+  handleChange(event) {
+    this.setState({domain: event.target.value});
+  }
+
+  search(q) {
     const {
       baseUrl,
       plid,
       pageSize
     } = this.props;
 
-    const domainUrl = `https://www.${baseUrl}/api/v1/domains/${plid}/?pageSize=${pageSize}`
-
     this.setState({
       searching: true
     });
 
-    const options = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      credentials: 'include',
-      body: JSON.stringify({ domain })
-    };
+    const domainUrl = `https://www.${baseUrl}/api/v1/domains/${plid}/`;
 
-    util.fetch(domainUrl, options)
-      .then(data => {
+    return util.fetchJsonp(domainUrl, { pageSize, q }).then(data => {
         this.setState({
           results: data,
           error: data.error ? data.error.message : '',
@@ -68,8 +65,8 @@ export default class DomainSearch extends Component {
 
   handleDomainSearch(e) {
     e.preventDefault();
-    if (this.refs.domainSearch.value) {
-      this.search(this.refs.domainSearch.value);
+    if (this.state.domain.length > 0) {
+      this.search(this.state.domain);
     }
   }
 
@@ -85,19 +82,17 @@ export default class DomainSearch extends Component {
     domains.forEach(item => {
       items.push({
         id: 'domain',
-        domain: item.domain,
-        productId: item.productId
+        domain: item.domain
       });
     });
 
-    var param = "?cart="+JSON.stringify({ items });
+    var cart = JSON.stringify({ items });
 
-    return util.fetchJsonp(cartUrl+param);
+    return util.fetchJsonp(cartUrl, {cart});
   }
 
   handleContinueClick(e) {
-    // istanbul ignore next
-    e && e.preventDefault();
+    e.preventDefault();
 
     const {
       baseUrl,
@@ -195,7 +190,7 @@ export default class DomainSearch extends Component {
       content = (
         <div>
           { (addingToCart) && <div className="rstore-loading"></div>}
-          <SearchResults results={results} cartClick={(domain) => this.handleSelectClick(domain)} {...this.props}/>
+          <SearchResults results={results} cartClick={(domain) => this.handleSelectClick(domain)} text={this.props.text}/>
         </div>
       );
     }
@@ -205,15 +200,15 @@ export default class DomainSearch extends Component {
         <div className="search-box">
           <div className="input-group">
             <div className="input-group2">
-              <input type="text" ref="domainSearch" className="search-field form-control" placeholder={this.props.text.placeholder} defaultValue={this.props.domainToCheck}/>
+              <input type="text" value={this.state.domain} onChange={this.handleChange} className="search-field form-control" placeholder={this.props.text.placeholder} />
               <span className="input-search-btn">
                 <button type="submit" className="rstore-domain-search-button submit button btn btn-primary" disabled={searching}>{this.props.text.search}</button>
               </span>
             </div>
             { results && <span className="input-continue-btn">
-               <button type="button" className="rstore-domain-continue-button button btn btn-primary"
-                 onClick={() => this.handleContinueClick()}
-                 disabled={ domainCount===0 && !(results.exactMatchDomain.available) }
+               <button type="button" className="rstore-domain-continue-button button btn btn-secondary"
+                 onClick={this.handleContinueClick}
+                 disabled={ domainCount===0 && !(results.exactMatchDomain && results.exactMatchDomain.available) }
                  >
                   {this.props.text.cart}  { (domainCount > 0) &&  `(${domainCount} ${this.props.text.selected})` }
                </button>

@@ -95,11 +95,6 @@ export default class DomainSearch extends Component {
     e.preventDefault();
 
     const {
-      baseUrl,
-      plid
-    } = this.props;
-
-    const {
       selectedDomains,
       results
     } = this.state;
@@ -118,8 +113,8 @@ export default class DomainSearch extends Component {
     this.addDomainsToCart(
       domains
     ).then(response => {
-      if (response.cartUrl) {
-       return window.location.href = response.cartUrl;
+      if (response.NextStepUrl) {
+       return window.location.href = response.NextStepUrl;
       }
 
       if (response.error){
@@ -128,7 +123,7 @@ export default class DomainSearch extends Component {
           error: response.error.message
         });
       }
-      return window.location.href = `https://cart.${baseUrl}/?plid=${plid}`
+
 
     }).catch(error => {
       this.setState({

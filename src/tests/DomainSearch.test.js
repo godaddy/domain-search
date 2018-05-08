@@ -184,7 +184,7 @@ describe('DomainSearch', () => {
     it('should add selected domains', () => {
       const wrapper = mount(<DomainSearch {...props} />);
       util.fetchJsonp.restore();
-      const spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({ cartUrl: '#' }));
+      const spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({ NextStepUrl: '#' }));
 
       wrapper.setState({
         selectedDomains: ['asdf.com'],

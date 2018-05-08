@@ -60,6 +60,7 @@ describe('Domain', () => {
     const wrapper = shallow(<Domain {...props} />);
 
     wrapper.setState({ selected: true });
+    wrapper.find('a').simulate('click');
 
     expect(wrapper.find('.rstore-success')).toHaveLength(1);
   });

@@ -1,5 +1,6 @@
 # Domain Search
 
+[![Build Status](https://travis-ci.com/godaddy/domain-search.svg?branch=master)](https://travis-ci.com/godaddy/domain-search)
 [![devDependencies Status](https://david-dm.org/godaddy/domain-search/master/dev-status.svg)](https://david-dm.org/godaddy/domain-search/master?type=dev)
 
 This is a simple react-based domain search widget used for designing and building custom GoDaddy reseller storefronts, as seen in our [WordPress Storefront Plugin](https://github.com/godaddy/wp-reseller-store).

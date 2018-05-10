@@ -31,6 +31,15 @@ describe('Domain', () => {
   it('should render Domain component for restricted domains', () => {
     const newProps = {
       ...props,
+      domainResult: {extendedValidation: true, listPrice: '$7.99'}
+    };
+
+    shallow(<Domain {...newProps} />);
+  });
+
+  it('should render Domain component for restricted domains not on sales', () => {
+    const newProps = {
+      ...props,
       domainResult: {extendedValidation: true}
     };
 
@@ -51,6 +60,7 @@ describe('Domain', () => {
     const wrapper = shallow(<Domain {...props} />);
 
     wrapper.setState({ selected: true });
+    wrapper.find('a').simulate('click');
 
     expect(wrapper.find('.rstore-success')).toHaveLength(1);
   });

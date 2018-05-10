@@ -3,9 +3,10 @@ import { shallow } from 'enzyme';
 import SearchResults from '../SearchResults';
 
 const props = {
-  domains: [{
-    available: true
-  }],
+  results: {
+    exactMatchDomain: {},
+    suggestedDomains: []
+  },
   cartClick: () => {},
   text: {}
 };

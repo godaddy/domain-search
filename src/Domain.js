@@ -5,49 +5,41 @@ export default class Domain extends Component {
   constructor() {
     super(...arguments);
 
-    this.handleSelectClick = this.handleSelectClick.bind(this);
-
     this.state = {
       selected: false
     };
   };
-
-  handleSelectClick(e) {
-    e.preventDefault();
-    this.props.cartClick(this);
-    return false;
-  }
 
   render() {
     const {
       domain,
       listPrice,
       salePrice,
-      extendedValidation
+      extendedValidation,
+      disclaimer
     } = this.props.domainResult;
 
     const {
-      selected,
-    } = this.state;
+      text,
+      cartClick
+    } = this.props;
 
     let content;
 
-    const buttonText = extendedValidation ? this.props.text.verify : this.props.text.select;
-
-    if (selected) {
+    if (this.state.selected) {
       content = (
         <div className="rstore-message">
           <span className="dashicons dashicons-yes rstore-success"></span>
-          <a className="rstore-domain-buy-button submit button selected btn btn-default" onClick={this.handleSelectClick}>{this.props.text.selected}</a>
+          <a className="rstore-domain-buy-button submit button selected btn btn-default" onClick={ ()=>cartClick(this) }>{ text.selected }</a>
         </div>
       );
     }
     else {
       content = (
         <div className="rstore-message">
-          {listPrice !== salePrice && <span className="listPrice"><small><s>{listPrice}</s></small></span>}
-          <span className="salePrice"><strong>{salePrice}{extendedValidation && '*'}</strong></span>
-           <a className="rstore-domain-buy-button submit button select btn btn-default" onClick={this.handleSelectClick}>{buttonText}</a>
+          { listPrice !== salePrice && <span className="listPrice"><small><s>{ listPrice }</s></small></span> }
+          <span className="salePrice"><strong>{ salePrice}{extendedValidation && '*' }</strong></span>
+           <a className="rstore-domain-buy-button submit button select btn btn-secondary" onClick={ ()=>cartClick(this) }>{ text.select }</a>
         </div>
       );
     }
@@ -56,10 +48,11 @@ export default class Domain extends Component {
       return (
         <div className="domain-result">
           <div className="domain-name">
-            {domain}
+            { domain }
+            <span className="rstore-disclaimer"><pre>{ disclaimer }</pre></span>
           </div>
           <div className="purchase-info">
-            {content}
+            { content }
           </div>
         </div>
       );

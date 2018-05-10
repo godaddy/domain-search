@@ -112,6 +112,12 @@ This app is open source! That means we want your contributions!
 3. Create pull-requests and help us make it better!
 
 ## Changelog
+  - v3.0.0
+    - Update dependencies
+    - Update api calls
+    - Update CSS for responsive layout
+    - Add domain disclaimers
+
   - v2.1.6
     - Update api endpoint
 

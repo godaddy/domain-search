@@ -191,17 +191,17 @@ export default class DomainSearch extends Component {
     }
 
     return (
-      <form onSubmit={this.handleDomainSearch}>
-        <div className="search-box">
+      <form className="search-form" onSubmit={this.handleDomainSearch}>
+        <div>
           <div className="input-group">
             <div className="input-group2">
-              <input type="text" value={this.state.domain} onChange={this.handleChange} className="search-field form-control" placeholder={this.props.text.placeholder} />
-              <span className="input-search-btn">
-                <button type="submit" className="rstore-domain-search-button submit button btn btn-primary" disabled={searching}>{this.props.text.search}</button>
-              </span>
+              <label>
+                <input type="search" value={this.state.domain} onChange={this.handleChange} className="search-field" placeholder={this.props.text.placeholder} />
+              </label>
+              <input type="submit" className="rstore-domain-search-button search-submit btn btn-primary" disabled={searching} value={this.props.text.search}/>
             </div>
             { results && <span className="input-continue-btn">
-               <button type="button" className="rstore-domain-continue-button button btn btn-secondary"
+               <button type="button" className="rstore-domain-continue-button btn btn-secondary"
                  onClick={this.handleContinueClick}
                  disabled={ domainCount===0 && !(results.exactMatchDomain && results.exactMatchDomain.available) }
                  >

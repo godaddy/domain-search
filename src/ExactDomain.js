@@ -12,13 +12,13 @@ const ExactDomain = (props) => {
   if (domainResult.available) {
     const availableText = text.available.replace('{domain_name}', domainResult.domain);
     content = (
-      <p className="available">{availableText}</p>
+      <p className="available">{ availableText }</p>
     );
   }
   else {
     const notAvailableText = text.notAvailable.replace('{domain_name}', domainResult.domain);
     content = (
-      <p className="not-available">{notAvailableText}</p>
+      <p className="not-available">{ notAvailableText }</p>
     );
   }
 

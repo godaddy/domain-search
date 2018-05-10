@@ -51,7 +51,7 @@ export default class DomainSearch extends Component {
 
     return util.fetchJsonp(domainUrl, { pageSize, q }).then(data => {
         this.setState({
-          results: data,
+          results: data.exactMatchDomain ? data : null,
           error: data.error ? data.error.message : '',
           searching: false
         });
@@ -164,8 +164,6 @@ export default class DomainSearch extends Component {
   }
 
   render() {
-    let content;
-
     const {
       searching,
       addingToCart,
@@ -176,44 +174,27 @@ export default class DomainSearch extends Component {
 
     const domainCount = selectedDomains.length;
 
-    if (searching) {
-      content = (
-        <div className="rstore-loading"></div>
-      );
-    }
-    else if (results && results.exactMatchDomain) {
-      content = (
-        <div>
-          { (addingToCart) && <div className="rstore-loading"></div>}
-          <SearchResults results={results} cartClick={(domain) => this.handleSelectClick(domain)} text={this.props.text}/>
-        </div>
-      );
-    }
-
     return (
-      <form className="search-form" onSubmit={this.handleDomainSearch}>
-        <div>
-          <div className="input-group">
-            <div className="input-group2">
-              <label>
-                <input type="search" value={this.state.domain} onChange={this.handleChange} className="search-field" placeholder={this.props.text.placeholder} />
-              </label>
-              <input type="submit" className="rstore-domain-search-button search-submit btn btn-primary" disabled={searching} value={this.props.text.search}/>
-            </div>
-            { results && <span className="input-continue-btn">
-               <button type="button" className="rstore-domain-continue-button btn btn-secondary"
-                 onClick={this.handleContinueClick}
-                 disabled={ domainCount===0 && !(results.exactMatchDomain && results.exactMatchDomain.available) }
-                 >
-                  {this.props.text.cart}  { (domainCount > 0) &&  `(${domainCount} ${this.props.text.selected})` }
-               </button>
-            </span>}
+      <form className="search-form" onSubmit={ this.handleDomainSearch }>
+        <div className="input-group">
+          <div className="input-group2">
+            <label>
+              <input type="search" value={ this.state.domain } onChange={ this.handleChange } className="search-field" placeholder={ this.props.text.placeholder } />
+            </label>
+            <input type="submit" className="rstore-domain-search-button search-submit btn btn-primary" disabled={ searching } value={ this.props.text.search }/>
           </div>
+          { results && <span className="input-continue-btn">
+            <button type="button" className="rstore-domain-continue-button btn btn-secondary"
+              onClick={this.handleContinueClick}
+              disabled={ domainCount===0 && !(results.exactMatchDomain && results.exactMatchDomain.available) }
+              >
+              { this.props.text.cart }  { (domainCount > 0) &&  `(${domainCount} ${this.props.text.selected})` }
+            </button>
+          </span> }
         </div>
-        <div className="result-content">
-          {(error) && <div className="rstore-error">Error: {error}</div>}
-          {content}
-        </div>
+          { error && <div className="rstore-error">Error: { error }</div> }
+          { (addingToCart || searching) && <div className="rstore-loading"></div> }
+          { results && <SearchResults results={ results } cartClick={ (domain) => this.handleSelectClick(domain) } text={ this.props.text }/> }
       </form>
     );
   }

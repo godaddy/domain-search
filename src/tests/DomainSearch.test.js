@@ -72,7 +72,7 @@ describe('DomainSearch', () => {
   it('should render error when adding to cart errors', () => {
     const wrapper = shallow(<DomainSearch {...props} />);
 
-    wrapper.setState({ searching: false, addingToCart: false, error: true, exactDomain: { available: true }, suggestedDomains: [] });
+    wrapper.setState({ searching: false, addingToCart: false, error: true, exactMatchDomain: { available: true }, suggestedDomains: [] });
 
     expect(wrapper.find('.rstore-error')).toHaveLength(1);
   });
@@ -192,9 +192,9 @@ describe('DomainSearch', () => {
         searching: false,
         addingToCart: false,
         results: {
-          exactDomain: {
+          exactMatchDomain: {
             available: true,
-            domain: '',
+            domain: 'test.com',
             listPrice: '0.00'
           },
           suggestedDomains: []
@@ -245,7 +245,7 @@ describe('DomainSearch', () => {
         searching: false,
         addingToCart: false,
         results: {
-          exactDomain: {
+          exactMatchDomain: {
             available: true,
             domain: '',
             listPrice: '0.00'
@@ -267,7 +267,7 @@ describe('DomainSearch', () => {
         searching: false,
         addingToCart: false,
         results: {
-          exactDomain: {
+          exactMatchDomain: {
             available: true,
             domain: '',
             listPrice: '0.00'
@@ -285,10 +285,10 @@ describe('DomainSearch', () => {
   it('should add domain to state when domain is selected', (done) => {
     const wrapper = mount(<DomainSearch {...props} />);
 
-    const exactDomainResult = { available: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
+    const exactMatchDomainResult = { available: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
     const suggestedDomainResult = { available: true, domain: 'suggest.com', listPrice: '0.00', salePrice: '9.00' };
 
-    wrapper.setState({results: { exactMatchDomain: exactDomainResult, suggestedDomains: [suggestedDomainResult] } });
+    wrapper.setState({results: { exactMatchDomain: exactMatchDomainResult, suggestedDomains: [suggestedDomainResult] } });
 
     wrapper.find('.rstore-domain-buy-button').at(0).simulate('click', { preventDefault() {} });
     wrapper.find('.rstore-domain-buy-button').at(1).simulate('click', { preventDefault() {} });
@@ -302,15 +302,15 @@ describe('DomainSearch', () => {
 
   it('should remove domain from state when domain is un-selected', (done) => {
     const wrapper = mount(<DomainSearch {...props} />);
-    const exactDomainResult = { available: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
+    const exactMatchDomainResult = { available: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
     const suggestedDomainResult = { available: true, domain: 'suggest.com', listPrice: '0.00', salePrice: '9.00' };
 
     wrapper.setState({
       results: {
-        exactMatchDomain: exactDomainResult,
+        exactMatchDomain: exactMatchDomainResult,
         suggestedDomains: [suggestedDomainResult]
       },
-      selectedDomains: [exactDomainResult]
+      selectedDomains: [exactMatchDomainResult]
     });
 
     wrapper.find('.rstore-domain-buy-button').at(0).simulate('click', { preventDefault() {} });

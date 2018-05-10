@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Domain from './Domain';
 import ExactDomain from './ExactDomain';
 
-const SearchResults = ({ results, cartClick, plid, text, baseUrl}) => {
+const SearchResults = ({ results, cartClick, plid, text, baseUrl }) => {
   const {
     exactMatchDomain,
     suggestedDomains,
@@ -11,17 +11,17 @@ const SearchResults = ({ results, cartClick, plid, text, baseUrl}) => {
   } = results;
 
   return (
-    <div>
-      <ExactDomain domainResult={exactMatchDomain} text={text} />
+    <div className="result-content">
+      <ExactDomain domainResult={ exactMatchDomain } text={ text } />
       <div className="rstore-exact-domain-list">
-        <Domain domainResult={exactMatchDomain} text={text} cartClick={cartClick}/>
+        <Domain domainResult={ exactMatchDomain } text={ text } cartClick={ cartClick }/>
       </div>
       <div className="rstore-domain-list">
-        {suggestedDomains && suggestedDomains.map((domainResult, index) => {
-          return domainResult.available && (<Domain key={index} domainResult={domainResult} text={text} cartClick={cartClick}/>);
+        { suggestedDomains && suggestedDomains.map((domainResult, index) => {
+          return domainResult.available && (<Domain key={ index } domainResult={ domainResult } text={ text } cartClick={ cartClick }/>);
         })}
       </div>
-      <div className="rstore-disclaimer"><pre>{disclaimer}</pre></div>
+      <div className="rstore-disclaimer"><pre>{ disclaimer }</pre></div>
     </div>
   );
 };

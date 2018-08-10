@@ -27,13 +27,13 @@ export default class DomainSearch extends Component {
 
   componentDidMount() {
     if (this.props.domainToCheck) {
-      this.setState({domain: this.props.domainToCheck});
+      this.setState({ domain: this.props.domainToCheck });
       this.search(this.props.domainToCheck);
     }
   }
 
   handleChange(event) {
-    this.setState({domain: event.target.value});
+    this.setState({ domain: event.target.value });
   }
 
   search(q) {
@@ -43,9 +43,7 @@ export default class DomainSearch extends Component {
       pageSize
     } = this.props;
 
-    this.setState({
-      searching: true
-    });
+    this.setState({ searching: true });
 
     const domainUrl = `https://www.${baseUrl}/api/v1/domains/${plid}/`;
 
@@ -88,7 +86,7 @@ export default class DomainSearch extends Component {
 
     var cart = JSON.stringify({ items });
 
-    return util.fetchJsonp(cartUrl, {cart});
+    return util.fetchJsonp(cartUrl, { cart });
   }
 
   handleContinueClick(e) {
@@ -173,6 +171,11 @@ export default class DomainSearch extends Component {
     } = this.state;
 
     const domainCount = selectedDomains.length;
+    const hasExactMatch = results && results.exactMatchDomain && results.exactMatchDomain.available;
+
+    window.onbeforeunload = () => {
+      return hasExactMatch ? 'Are you sure?' : null;
+    };
 
     return (
       <form className="search-form" onSubmit={ this.handleDomainSearch }>
@@ -185,16 +188,17 @@ export default class DomainSearch extends Component {
           </div>
           { results && <span className="input-continue-btn">
             <button type="button" className="rstore-domain-continue-button btn btn-secondary"
-              onClick={this.handleContinueClick}
-              disabled={ domainCount===0 && !(results.exactMatchDomain && results.exactMatchDomain.available) }
+              onClick={ this.handleContinueClick }
+              disabled={ domainCount === 0 && !hasExactMatch }
               >
-              { this.props.text.cart }  { (domainCount > 0) &&  `(${domainCount} ${this.props.text.selected})` }
+              { this.props.text.cart }
+              { (domainCount > 0) && `(${domainCount} ${this.props.text.selected})` }
             </button>
           </span> }
         </div>
           { error && <div className="rstore-error">Error: { error }</div> }
           { (addingToCart || searching) && <div className="rstore-loading"></div> }
-          { results && <SearchResults results={ results } cartClick={ (domain) => this.handleSelectClick(domain) } text={ this.props.text }/> }
+          { results && <SearchResults results={ results } cartClick={ domain => this.handleSelectClick(domain) } text={ this.props.text }/> }
       </form>
     );
   }

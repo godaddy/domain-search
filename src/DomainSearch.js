@@ -173,7 +173,7 @@ export default class DomainSearch extends Component {
     const domainCount = selectedDomains.length;
     const hasExactMatch = results && results.exactMatchDomain && results.exactMatchDomain.available;
 
-    window.onbeforeunload = e => {
+    window.onbeforeunload = () => {
       // Most browsers control the return message to the user, we can safely return an empty string here.
       return hasExactMatch || domainCount > 0 ? '' : undefined;
     };

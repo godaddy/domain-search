@@ -93,7 +93,7 @@ describe('DomainSearch', () => {
     expect(spy.called).toBeFalsy();
   });
 
-  it('should error if domain search fails', (done) => {
+  it('should error if domain search fails', done => {
     const wrapper = mount(<DomainSearch {...props} />);
 
     util.fetchJsonp.restore();
@@ -108,7 +108,7 @@ describe('DomainSearch', () => {
     }, 50);
   });
 
-  it('should error if domain search returns error message', (done) => {
+  it('should error if domain search returns error message', done => {
     const wrapper = mount(<DomainSearch {...props} />);
 
     util.fetchJsonp.restore();
@@ -123,7 +123,7 @@ describe('DomainSearch', () => {
     }, 50);
   });
 
-  it('should add suggested domains to state on form submission', (done) => {
+  it('should add suggested domains to state on form submission', done => {
     const wrapper = mount(<DomainSearch {...props} />);
     const domain = { domain: 'test.com', available: true, salePrice: '0', listPrice: '0' };
 
@@ -282,7 +282,7 @@ describe('DomainSearch', () => {
     });
   });
 
-  it('should add domain to state when domain is selected', (done) => {
+  it('should add domain to state when domain is selected', done => {
     const wrapper = mount(<DomainSearch {...props} />);
 
     const exactMatchDomainResult = { available: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
@@ -300,7 +300,7 @@ describe('DomainSearch', () => {
     }, 50);
   });
 
-  it('should remove domain from state when domain is un-selected', (done) => {
+  it('should remove domain from state when domain is un-selected', done => {
     const wrapper = mount(<DomainSearch {...props} />);
     const exactMatchDomainResult = { available: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
     const suggestedDomainResult = { available: true, domain: 'suggest.com', listPrice: '0.00', salePrice: '9.00' };
@@ -320,5 +320,37 @@ describe('DomainSearch', () => {
 
       done();
     }, 50);
+  });
+
+  it('should prompt user to prevent navigation when domains are selected', () => {
+    const wrapper = mount(<DomainSearch {...props} />);
+    const exactMatchDomainResult = { available: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
+    const suggestedDomainResult = { available: true, domain: 'suggest.com', listPrice: '0.00', salePrice: '9.00' };
+
+    wrapper.setState({
+      results: {
+        exactMatchDomain: exactMatchDomainResult,
+        suggestedDomains: [suggestedDomainResult]
+      },
+      selectedDomains: [exactMatchDomainResult]
+    });
+
+    expect(global.onbeforeunload()).toEqual('');
+  });
+
+  it('should not prompt user to prevent navigation when no domains are selected', () => {
+    const wrapper = mount(<DomainSearch {...props} />);
+    const exactMatchDomainResult = { available: false, domain: 'unavailable.com', listPrice: '0.00', salePrice: '9.00' };
+    const suggestedDomainResult = { available: true, domain: 'suggest.com', listPrice: '0.00', salePrice: '9.00' };
+
+    wrapper.setState({
+      results: {
+        exactMatchDomain: exactMatchDomainResult,
+        suggestedDomains: [suggestedDomainResult]
+      },
+      selectedDomains: []
+    });
+
+    expect(global.onbeforeunload()).toEqual(undefined);
   });
 });

@@ -112,6 +112,9 @@ This app is open source! That means we want your contributions!
 3. Create pull-requests and help us make it better!
 
 ## Changelog
+  - v3.1.0
+    - Prevent page navigation when domains are selected
+
   - v3.0.0
     - Update dependencies
     - Update api calls

@@ -117,7 +117,7 @@ export default class DomainSearch extends Component {
 
       if (response.error){
         return this.setState({
-          addingToCart:false,
+          addingToCart: false,
           error: response.error.message
         });
       }
@@ -125,7 +125,7 @@ export default class DomainSearch extends Component {
 
     }).catch(error => {
       this.setState({
-        addingToCart:false,
+        addingToCart: false,
         error: error.message
       });
     });
@@ -173,9 +173,11 @@ export default class DomainSearch extends Component {
     const domainCount = selectedDomains.length;
     const hasExactMatch = results && results.exactMatchDomain && results.exactMatchDomain.available;
 
+    // Prevent navigation when domains are selected and user attempts to navigate
+    // outside of the domain purchase path
     window.onbeforeunload = () => {
       // Most browsers control the return message to the user, we can safely return an empty string here.
-      return hasExactMatch || domainCount > 0 ? '' : undefined;
+      return !addingToCart && (hasExactMatch || domainCount > 0) ? '' : undefined;
     };
 
     return (

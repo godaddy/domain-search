@@ -1,6 +1,5 @@
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import sinon from 'sinon';
 import Domain from '../Domain';
 
 const props = {
@@ -12,16 +11,6 @@ const props = {
   cartClick: () => {},
   text: {}
 };
-
-let sandbox;
-
-beforeEach(() => {
-  sandbox = sinon.sandbox.create();
-});
-
-afterEach(() => {
-  sandbox.restore();
-});
 
 describe('Domain', () => {
   it('should render Domain component', () => {

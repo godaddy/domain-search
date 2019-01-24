@@ -1,6 +1,5 @@
 const fs = require('fs');
 const file = require('./build/asset-manifest.json')['main.js'];
-const src = './build/';
 const dest = './dist/';
 
 if (!fs.existsSync(dest)){
@@ -11,8 +10,10 @@ if (fs.existsSync(dest+'index.js')){
   fs.unlinkSync(dest+'index.js');
 }
 
+const mainFile = file.replace('/domain-search', './build');
+
 // remove source maps from production and move file to dist folder
-fs.readFile(src+file, 'utf8', (err, data) => {
+fs.readFile(mainFile, 'utf8', (err, data) => {
   if (err) {
     console.log('Unable to read file from manifest.');
     process.exit(1);

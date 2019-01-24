@@ -17,7 +17,7 @@
     "type": "git",
     "url": "https://github.com/godaddy/domain-search"
   },
-  "homepage": ".",
+  "homepage": "https://godaddy.github.io/domain-search",
   "author": "GoDaddy.com Operating Company, LLC",
   "contributors": [
     "Chris Beresford <cberesford@godaddy.com>",

@@ -14,12 +14,12 @@ const props = {
   baseUrl: 'secureserver.net'
 };
 
-let sandbox, spy;
+let spy;
 
 beforeEach(() => {
-  sandbox = sinon.sandbox.create();
+  sinon.createSandbox();
 
-  spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({
+  spy = sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({
       exactMatchDomain: {},
       suggestedDomains: [],
       disclaimer: 'disclaimer'
@@ -27,7 +27,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  sandbox.restore();
+  sinon.restore();
 });
 
 describe('DomainSearch', () => {
@@ -97,7 +97,7 @@ describe('DomainSearch', () => {
     const wrapper = mount(<DomainSearch {...props} />);
 
     util.fetchJsonp.restore();
-    sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.reject('error message'));
+    sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.reject('error message'));
 
     wrapper.setState({ 'domain': 'test.com' });
     wrapper.find('form').simulate('submit', { preventDefault() {} });
@@ -112,7 +112,7 @@ describe('DomainSearch', () => {
     const wrapper = mount(<DomainSearch {...props} />);
 
     util.fetchJsonp.restore();
-    sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({ error: { message: 'error message' } }));
+    sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({ error: { message: 'error message' } }));
 
     wrapper.setState({ 'domain': 'test.com' });
     wrapper.find('form').simulate('submit', { preventDefault() {} });
@@ -128,7 +128,7 @@ describe('DomainSearch', () => {
     const domain = { domain: 'test.com', available: true, salePrice: '0', listPrice: '0' };
 
     util.fetchJsonp.restore();
-    sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({
+    sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({
       exactMatchDomain: domain,
       suggestedDomains: [domain],
       disclaimer: 'disclaimer'
@@ -184,7 +184,7 @@ describe('DomainSearch', () => {
     it('should add selected domains', () => {
       const wrapper = mount(<DomainSearch {...props} />);
       util.fetchJsonp.restore();
-      const spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({ NextStepUrl: '#' }));
+      const spy = sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({ NextStepUrl: '#' }));
 
       wrapper.setState({
         selectedDomains: ['asdf.com'],
@@ -209,7 +209,7 @@ describe('DomainSearch', () => {
     it('should set error in state when api has an error', () => {
       const wrapper = mount(<DomainSearch {...props} />);
       util.fetchJsonp.restore();
-      const spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({
+      const spy = sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({
         error: 'domain no longer available'
       }));
 
@@ -236,7 +236,7 @@ describe('DomainSearch', () => {
     it('should set error in state when network error occurred', () => {
       const wrapper = mount(<DomainSearch {...props} />);
       util.fetchJsonp.restore();
-      const spy = sandbox.stub(util, 'fetchJsonp').callsFake(() => Promise.reject({
+      const spy = sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.reject({
         error: 'domain no longer available'
       }));
 

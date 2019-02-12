@@ -6,15 +6,15 @@ describe('App', () => {
   let sandbox;
 
   beforeEach(() => {
-    sandbox = sinon.sandbox.create();
+    sinon.createSandbox();
   });
 
   afterEach(() => {
-    sandbox.restore();
+    sinon.restore();
   });
 
   it('should render for each rstore-domain-search', () => {
-    const render = sandbox.stub(ReactDOM, 'render').callsFake(() => {});
+    const render = sinon.stub(ReactDOM, 'render').callsFake(() => {});
 
     const element = {
       dataset: {
@@ -22,7 +22,7 @@ describe('App', () => {
       }
     }
 
-    sandbox.stub(global.document, 'getElementsByClassName').callsFake(() => [element, element, element]);
+    sinon.stub(global.document, 'getElementsByClassName').callsFake(() => [element, element, element]);
 
     require('../');
 

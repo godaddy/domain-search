@@ -107,6 +107,15 @@ hr {
   display: inline-block;
 }
 
+.form-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-form {
+  flex-grow: 1;
+}
+
 .search-form .search-field {
   width: 80%;
   background: #fff;
@@ -161,7 +170,7 @@ hr {
 }
 
 @media (min-width: 991px) {
-  .rstore-domain-search .input-group2 {
+  .rstore-domain-search {
     display: table;
     border-collapse: separate;
     width: 100%;
@@ -175,19 +184,19 @@ hr {
     width: 100%;
   }
 
-  .rstore-domain-search .input-continue-btn {
+  .rstore-domain-search {
     display: table-cell;
     width: 1%;
     white-space: nowrap;
   }
 
-  .rstore-domain-search .input-continue-btn button {
+  .rstore-domain-search button {
     margin-left: 10px;
   }
 }
 
 @media (max-width: 1200px) {
-  .rstore-domain-search .input-continue-btn button {
+  .rstore-domain-search button {
     position: relative;
     width: 100%;
     margin-top: .3em;

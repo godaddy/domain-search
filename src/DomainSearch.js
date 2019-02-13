@@ -77,7 +77,7 @@ export default class DomainSearch extends Component {
     if (index >= 0 ){
       newSelectDomains = [
         ...selectedDomains.slice(0, index),
-        ...selectedDomains.slice(index+1)
+        ...selectedDomains.slice(index + 1)
       ];
 
       domainObj.setState({

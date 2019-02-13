@@ -7,7 +7,7 @@ import util from './util';
 const initialState = {
   results: null,
   searching: false,
-  addingToCart: false,
+  submitting: false,
   error: '',
   selectedDomains: [],
   hasError: false,
@@ -68,69 +68,6 @@ export default class DomainSearch extends Component {
     }
   }
 
-  addDomainsToCart(domains) {
-    const {
-      baseUrl,
-      plid
-    } = this.props;
-
-    const cartUrl = `https://www.${baseUrl}/api/v1/cart/${plid}/`;
-    const items =[];
-
-    domains.forEach(item => {
-      items.push({
-        id: 'domain',
-        domain: item.domain
-      });
-    });
-
-    var cart = JSON.stringify({ items });
-
-    return util.fetchJsonp(cartUrl, { cart });
-  }
-
-  handleContinueClick(e) {
-    e.preventDefault();
-
-    const {
-      selectedDomains,
-      results
-    } = this.state;
-
-    this.setState({ addingToCart: true });
-
-    let domains;
-
-    if (selectedDomains.length === 0 && results.exactMatchDomain.available) {
-      domains = [results.exactMatchDomain];
-    }
-    else {
-      domains = selectedDomains;
-    }
-
-    this.addDomainsToCart(
-      domains
-    ).then(response => {
-      if (response.NextStepUrl) {
-       return window.location.href = response.NextStepUrl;
-      }
-
-      if (response.error){
-        return this.setState({
-          addingToCart: false,
-          error: response.error.message
-        });
-      }
-
-
-    }).catch(error => {
-      this.setState({
-        addingToCart: false,
-        error: error.message
-      });
-    });
-  }
-
   handleSelectClick(domainObj) {
     const { selectedDomains } = this.state;
 
@@ -161,12 +98,11 @@ export default class DomainSearch extends Component {
     this.setState({ selectedDomains: newSelectDomains });
   }
 
-  generateCartItems() {
-    const {
-      baseUrl,
-      plid
-    } = this.props;
+  handleContinueClick() {
+    this.setState({ submitting: true })
+  }
 
+  generateCartItems() {
     const {
       selectedDomains,
       results
@@ -177,7 +113,6 @@ export default class DomainSearch extends Component {
     if (results) {
       const domainCount = selectedDomains.length;
       const hasExactMatch = results && results.exactMatchDomain && results.exactMatchDomain.available;
-      const cartUrl = `https://www.${baseUrl}/api/v1/cart/${plid}/`;
 
       let domains;
 
@@ -196,13 +131,19 @@ export default class DomainSearch extends Component {
       });
     }
 
-    return JSON.stringify({ items });
+    return JSON.stringify(items);
   }
 
   render() {
     const {
+      baseUrl,
+      plid,
+      text
+    } = this.props;
+
+    const {
       searching,
-      addingToCart,
+      submitting,
       results,
       selectedDomains,
       error
@@ -210,13 +151,14 @@ export default class DomainSearch extends Component {
 
     const domainCount = selectedDomains.length;
     const hasExactMatch = results && results.exactMatchDomain && results.exactMatchDomain.available;
+    const cartUrl = `https://www.${baseUrl}/api/v1/cart/${plid}/?redirect=true`;
     const items = this.generateCartItems();
 
     // Prevent navigation when domains are selected and user attempts to navigate
     // outside of the domain purchase path
     window.onbeforeunload = () => {
       // Most browsers control the return message to the user, we can safely return an empty string here.
-      return !addingToCart && (hasExactMatch || domainCount > 0) ? '' : undefined;
+      return !submitting && (hasExactMatch || domainCount > 0) ? '' : undefined;
     };
 
     return (
@@ -225,25 +167,27 @@ export default class DomainSearch extends Component {
           <div className="input-group">
             <div className="input-group2">
               <label>
-                <input type="search" value={ this.state.domain } onChange={ this.handleChange } className="search-field" placeholder={ this.props.text.placeholder } />
+                <input type="search" value={ this.state.domain } onChange={ this.handleChange } className="search-field" placeholder={ text.placeholder }/>
               </label>
-              <input type="submit" className="rstore-domain-search-button search-submit btn btn-primary" disabled={ searching } value={ this.props.text.search }/>
+              <input type="submit" className="rstore-domain-search-button search-submit btn btn-primary" disabled={ searching || submitting } value={ text.search }/>
             </div>
           </div>
             { error && <div className="rstore-error">Error: { error }</div> }
-            { (addingToCart || searching) && <div className="rstore-loading"></div> }
-            { results && <SearchResults results={ results } cartClick={ domain => this.handleSelectClick(domain) } text={ this.props.text }/> }
+            { searching && <div className="rstore-loading"></div> }
+            { results && <SearchResults results={ results } cartClick={ domain => this.handleSelectClick(domain) } text={ text }/> }
         </form>
 
         { results &&
-          <form className="input-continue-btn" method="POST">
+          <form className="input-continue-btn" method="POST" action= { cartUrl }>
             <input type="hidden" name="items" value={ items } />
-            <button type="button" className="rstore-domain-continue-button btn btn-secondary"
+            <button
+              type="submit"
+              className="rstore-domain-continue-button btn btn-secondary"
               onClick={ this.handleContinueClick }
               disabled={ domainCount === 0 && !hasExactMatch }
             >
-              { this.props.text.cart }
-              { (domainCount > 0) && `(${domainCount} ${this.props.text.selected})` }
+              { text.cart }
+              { (domainCount > 0) && `(${domainCount} ${text.selected})` }
             </button>
           </form>
         }

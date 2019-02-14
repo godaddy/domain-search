@@ -191,7 +191,8 @@ hr {
   }
 
   .rstore-domain-search button {
-    margin-left: 10px;
+    margin: 10px;
+    float: right;
   }
 }
 

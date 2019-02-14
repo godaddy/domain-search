@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import SearchResults from './SearchResults';
 
@@ -111,9 +111,6 @@ export default class DomainSearch extends Component {
     const items = [];
 
     if (results) {
-      const domainCount = selectedDomains.length;
-      const hasExactMatch = results && results.exactMatchDomain && results.exactMatchDomain.available;
-
       let domains;
 
       if (selectedDomains.length === 0 && results.exactMatchDomain.available) {
@@ -162,46 +159,44 @@ export default class DomainSearch extends Component {
     };
 
     return (
-      <div>
+      <Fragment>
         <div className="form-container">
           <form className="search-form" onSubmit={ this.handleDomainSearch }>
-            <div className="input-group">
-              <input
-                type="search"
-                value={ this.state.domain }
-                onChange={ this.handleChange }
-                className="search-field"
-                placeholder={ text.placeholder }
-              />
-              <input
-                type="submit"
-                className="rstore-domain-search-button search-submit btn btn-primary"
-                disabled={ searching || submitting }
-                value={ text.search }
-              />
-            </div>
+            <input
+              type="search"
+              value={ this.state.domain }
+              onChange={ this.handleChange }
+              className="search-field"
+              placeholder={ text.placeholder }
+            />
+            <input
+              type="submit"
+              className="rstore-domain-search-button search-submit btn btn-primary"
+              disabled={ searching || submitting }
+              value={ text.search }
+            />
           </form>
-
-          { results &&
-            <form className="continue-form" method="POST" action= { cartUrl }>
-              <input type="hidden" name="items" value={ items } />
-              <button
-                type="submit"
-                className="rstore-domain-continue-button btn btn-secondary"
-                onClick={ this.handleContinueClick }
-                disabled={ domainCount === 0 && !hasExactMatch }
-              >
-                { text.cart }
-                { (domainCount > 0) && `(${domainCount} ${text.selected})` }
-              </button>
-            </form>
-          }
         </div>
+
+        { results &&
+          <form className="continue-form" method="POST" action= { cartUrl }>
+            <input type="hidden" name="items" value={ items } />
+            <button
+              type="submit"
+              className="rstore-domain-continue-button btn btn-secondary"
+              onClick={ this.handleContinueClick }
+              disabled={ domainCount === 0 && !hasExactMatch }
+            >
+              { text.cart }
+              { (domainCount > 0) && `(${domainCount} ${text.selected})` }
+            </button>
+          </form>
+        }
 
         { error && <div className="rstore-error">Error: { error }</div> }
         { (searching || submitting) && <div className="rstore-loading"></div> }
         { results && <SearchResults results={ results } cartClick={ domain => this.handleSelectClick(domain) } text={ text }/> }
-      </div>
+      </Fragment>
     );
   }
 }

@@ -30,7 +30,7 @@ export default class Domain extends Component {
       content = (
         <div className="rstore-message">
           <span className="dashicons dashicons-yes rstore-success"></span>
-          <a className="rstore-domain-buy-button submit button selected btn btn-default" onClick={ ()=>cartClick(this) }>{ text.selected }</a>
+          <button className="rstore-domain-buy-button selected btn btn-default" onClick={ ()=>cartClick(this) }>{ text.selected }</button>
         </div>
       );
     }
@@ -39,7 +39,7 @@ export default class Domain extends Component {
         <div className="rstore-message">
           { listPrice !== salePrice && <span className="listPrice"><small><s>{ listPrice }</s></small></span> }
           <span className="salePrice"><strong>{ salePrice}{extendedValidation && '*' }</strong></span>
-           <a className="rstore-domain-buy-button submit button select btn btn-secondary" onClick={ ()=>cartClick(this) }>{ text.select }</a>
+           <button className="rstore-domain-buy-button select btn btn-secondary" onClick={ ()=>cartClick(this) }>{ text.select }</button>
         </div>
       );
     }

@@ -38,7 +38,7 @@ describe('Domain', () => {
   it('should successfully add when domain is selected', () => {
     const wrapper = mount(<Domain {...props} />);
 
-    wrapper.find('a').simulate('click');
+    wrapper.find('button').simulate('click');
 
     setTimeout(() => {
       expect(wrapper.state('listPrice')).toHaveLength(1);
@@ -49,7 +49,7 @@ describe('Domain', () => {
     const wrapper = shallow(<Domain {...props} />);
 
     wrapper.setState({ selected: true });
-    wrapper.find('a').simulate('click');
+    wrapper.find('button').simulate('click');
 
     expect(wrapper.find('.rstore-success')).toHaveLength(1);
   });

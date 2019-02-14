@@ -20,9 +20,9 @@ beforeEach(() => {
   sinon.createSandbox();
 
   spy = sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({
-      exactMatchDomain: {},
-      suggestedDomains: [],
-      disclaimer: 'disclaimer'
+    exactMatchDomain: {},
+    suggestedDomains: [],
+    disclaimer: 'disclaimer'
   }));
 });
 
@@ -64,7 +64,7 @@ describe('DomainSearch', () => {
   it('should render spinner when adding to cart', () => {
     const wrapper = shallow(<DomainSearch {...props} />);
 
-    wrapper.setState({ searching: false, addingToCart: true, results: { exactMatchDomain: { available: true } } });
+    wrapper.setState({ searching: false, submitting: true, results: { exactMatchDomain: { available: true } } });
 
     expect(wrapper.find('.rstore-loading')).toHaveLength(1);
   });
@@ -72,7 +72,7 @@ describe('DomainSearch', () => {
   it('should render error when adding to cart errors', () => {
     const wrapper = shallow(<DomainSearch {...props} />);
 
-    wrapper.setState({ searching: false, addingToCart: false, error: true, exactMatchDomain: { available: true }, suggestedDomains: [] });
+    wrapper.setState({ searching: false, submitting: false, error: true, exactMatchDomain: { available: true }, suggestedDomains: [] });
 
     expect(wrapper.find('.rstore-error')).toHaveLength(1);
   });
@@ -80,7 +80,7 @@ describe('DomainSearch', () => {
   it('should render error when domain search errors', () => {
     const wrapper = shallow(<DomainSearch {...props} />);
 
-    wrapper.setState({ searching: false, addingToCart: false, error: true });
+    wrapper.setState({ searching: false, submitting: false, error: true });
 
     expect(wrapper.find('.rstore-error')).toHaveLength(1);
   });
@@ -88,7 +88,7 @@ describe('DomainSearch', () => {
   it('should not call handleDomainSearch when an empty form is submitted', () => {
     const wrapper = mount(<DomainSearch {...props} />);
 
-    wrapper.find('form').simulate('submit', { preventDefault() {} });
+    wrapper.find('.search-form').simulate('submit', { preventDefault() {} });
 
     expect(spy.called).toBeFalsy();
   });
@@ -100,7 +100,7 @@ describe('DomainSearch', () => {
     sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.reject('error message'));
 
     wrapper.setState({ 'domain': 'test.com' });
-    wrapper.find('form').simulate('submit', { preventDefault() {} });
+    wrapper.find('.search-form').simulate('submit', { preventDefault() {} });
 
     setTimeout(() => {
       expect(wrapper.find('rstore-error'));
@@ -115,7 +115,7 @@ describe('DomainSearch', () => {
     sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({ error: { message: 'error message' } }));
 
     wrapper.setState({ 'domain': 'test.com' });
-    wrapper.find('form').simulate('submit', { preventDefault() {} });
+    wrapper.find('.search-form').simulate('submit', { preventDefault() {} });
 
     setTimeout(() => {
       expect(wrapper.find('rstore-error'));
@@ -135,7 +135,7 @@ describe('DomainSearch', () => {
     }));
 
     wrapper.setState({ 'domain': 'test.com' });
-    wrapper.find('form').simulate('submit', { preventDefault() {} });
+    wrapper.find('.search-form').simulate('submit', { preventDefault() {} });
 
     setTimeout(() => {
       expect(wrapper.state('results').exactMatchDomain).toEqual(domain);
@@ -159,126 +159,76 @@ describe('DomainSearch', () => {
     expect(wrapper.find(<SearchResults {...searchProps} />));
   });
 
-  it('should add exact domain when continue to cart button is clicked', () => {
-    const wrapper = mount(<DomainSearch {...props} />);
+  // Test the method/action attribute is expected
+  // assert the form exists with those attributes
+  // check value of hidden item inputs
+  describe('Given continue to cart button is clicked', () => {
+    const domain = 'test.com';
 
-    wrapper.setState({
-      searching: false,
-      addingToCart: false,
-      results: {
-        exactMatchDomain: {
-          available: true,
-          domain: '',
-          listPrice: '0.00'
-        },
-        suggestedDomains: []
-      }
+    it('should add exact domain', () => {
+      const wrapper = mount(<DomainSearch {...props} />);
+
+      wrapper.setState({
+        searching: false,
+        submitting: false,
+        results: {
+          exactMatchDomain: {
+            available: true,
+            domain,
+            listPrice: '0.00'
+          },
+          suggestedDomains: []
+        }
+      });
+
+      wrapper.find('.continue-form').simulate('submit', { preventDefault() {} });
+
+      expect(wrapper.find('input[name="items"]')).toHaveLength(1);
+      expect(wrapper.find('input[name="items"]').props().value).toContain(domain);
     });
 
-    wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
-
-    expect(spy.called).toBeTruthy();
-  });
-
-  describe('Given continue to cart button is clicked', () => {
     it('should add selected domains', () => {
       const wrapper = mount(<DomainSearch {...props} />);
-      util.fetchJsonp.restore();
-      const spy = sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({ NextStepUrl: '#' }));
 
       wrapper.setState({
-        selectedDomains: ['asdf.com'],
+        selectedDomains: [{
+          id: 'domain',
+          available: true,
+          domain
+        }],
         error: '',
         searching: false,
-        addingToCart: false,
+        submitting: false,
         results: {
-          exactMatchDomain: {
-            available: true,
-            domain: 'test.com',
-            listPrice: '0.00'
-          },
+          exactMatchDomain: {},
           suggestedDomains: []
         }
       });
 
-      wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
+      wrapper.find('.continue-form').simulate('submit', { preventDefault() {} });
 
-      expect(spy.called).toBeTruthy();
+      expect(wrapper.find('input[name="items"]')).toHaveLength(1);
+      expect(wrapper.find('input[name="items"]').props().value).toContain(domain);
     });
 
-    it('should set error in state when api has an error', () => {
-      const wrapper = mount(<DomainSearch {...props} />);
-      util.fetchJsonp.restore();
-      const spy = sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.resolve({
-        error: 'domain no longer available'
-      }));
-
-      wrapper.setState({
-        selectedDomains: ['asdf.com'],
-        searching: false,
-        addingToCart: false,
-        results: {
-          exactMatchDomain: {
-            available: true,
-            domain: '',
-            listPrice: '0.00'
-          },
-          suggestedDomains: []
-        },
-        error: 'an error has occurred'
-      });
-
-      wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
-
-      expect(spy.called).toBeTruthy();
-    });
-
-    it('should set error in state when network error occurred', () => {
-      const wrapper = mount(<DomainSearch {...props} />);
-      util.fetchJsonp.restore();
-      const spy = sinon.stub(util, 'fetchJsonp').callsFake(() => Promise.reject({
-        error: 'domain no longer available'
-      }));
-
-      wrapper.setState({
-        selectedDomains: ['asdf.com'],
-        searching: false,
-        addingToCart: false,
-        results: {
-          exactMatchDomain: {
-            available: true,
-            domain: '',
-            listPrice: '0.00'
-          },
-          suggestedDomains: []
-        }
-      });
-
-      wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
-
-      expect(spy.called).toBeTruthy();
-    });
-
-    it('should do nothing when there is no cartUrl and no error', () => {
+    it('should set state to submitting', done => {
       const wrapper = mount(<DomainSearch {...props} />);
 
       wrapper.setState({
-        selectedDomains: ['asdf.com'],
-        searching: false,
-        addingToCart: false,
-        results: {
-          exactMatchDomain: {
-            available: true,
-            domain: '',
-            listPrice: '0.00'
-          },
-          suggestedDomains: []
-        }
-      });
+        selectedDomains: [{
+          id: 'domain',
+          available: true,
+          domain
+        }],
+        results: { exactMatchDomain: {}, suggestedDomains: [] } });
 
       wrapper.find('.rstore-domain-continue-button').simulate('click', { preventDefault() {} });
 
-      expect(spy.called).toBeTruthy();
+      setTimeout(() => {
+        expect(wrapper.state('submitting')).toBeTruthy();
+
+        done();
+      }, 50);
     });
   });
 
@@ -288,7 +238,7 @@ describe('DomainSearch', () => {
     const exactMatchDomainResult = { available: true, domain: 'available.com', listPrice: '0.00', salePrice: '9.00' };
     const suggestedDomainResult = { available: true, domain: 'suggest.com', listPrice: '0.00', salePrice: '9.00' };
 
-    wrapper.setState({results: { exactMatchDomain: exactMatchDomainResult, suggestedDomains: [suggestedDomainResult] } });
+    wrapper.setState({ results: { exactMatchDomain: exactMatchDomainResult, suggestedDomains: [suggestedDomainResult] } });
 
     wrapper.find('.rstore-domain-buy-button').at(0).simulate('click', { preventDefault() {} });
     wrapper.find('.rstore-domain-buy-button').at(1).simulate('click', { preventDefault() {} });

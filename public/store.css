@@ -108,16 +108,15 @@ hr {
 }
 
 .form-container {
-  display: flex;
   align-items: center;
 }
 
 .search-form {
-  flex-grow: 1;
+  display: flex;
 }
 
 .search-form .search-field {
-  width: 80%;
+  flex-grow: 4;
   background: #fff;
   -webkit-border-radius: 5px 0 0 5px;
   border-radius: 5px 0 0 5px;
@@ -137,8 +136,7 @@ hr {
   }
 
 .search-form .search-submit {
-  float: right;
-  width: 20%;
+  flex-grow: 1;
   -webkit-border-radius: 0 5px 5px 0;
   border-radius: 0 5px 5px 0;
   padding: 0;

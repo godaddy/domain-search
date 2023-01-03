@@ -43,7 +43,7 @@
     "react-addons-test-utils": "^15.6.2",
     "react-app-polyfill": "^0.2.2",
     "react-dom": "^16.7.0",
-    "react-scripts": "^2.1.8",
+    "react-scripts": "^5.0.1",
     "react-test-renderer": "^16.7.0",
     "sinon": "^7.2.3",
     "uglifyjs-webpack-plugin": "^2.1.2",

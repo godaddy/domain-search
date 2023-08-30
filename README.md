@@ -45,6 +45,7 @@ data-text_not_available="Sorry, {domain_name} is taken."
 data-text_cart="Continue to Cart"
 data-text_select="Select"
 data-text_selected="Selected"
+data-new_tab=true
 ```
 
 `data-text_available` and `data-text_not_available` fields support text substitution, {domain_name} in the provided text will be replaced by the actual domain name searched.
@@ -59,6 +60,7 @@ Example Usage
     data-text_cart="Continue to Cart"
     data-text_select="Select"
     data-text_selected="Selected"
+    data-new_tab=true
 >Domain Search</div>
 ```
 

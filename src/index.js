@@ -24,9 +24,10 @@ Array.prototype.forEach.call(elements, element => {
   const baseUrl = element.dataset.base_url || 'secureserver.net';
   const pageSize = element.dataset.page_size || '5';
   const parsed = queryString.parse(window.location.search);
+  const newTab = element.dataset.new_tab || false;
 
   return ReactDOM.render(
-    <DomainSearch text={text} plid={element.dataset.plid} baseUrl={baseUrl} pageSize={pageSize} domainToCheck={parsed.domainToCheck}/>,
+    <DomainSearch text={text} plid={element.dataset.plid} baseUrl={baseUrl} pageSize={pageSize} domainToCheck={parsed.domainToCheck} newTab={newTab} />,
     element
   );
 });

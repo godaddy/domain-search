@@ -135,7 +135,8 @@ export default class DomainSearch extends Component {
     const {
       baseUrl,
       plid,
-      text
+      text,
+      newTab
     } = this.props;
 
     const {
@@ -179,7 +180,7 @@ export default class DomainSearch extends Component {
         </div>
 
         { results &&
-          <form className="continue-form" method="POST" action= { cartUrl }>
+          <form className="continue-form" method="POST" action= { cartUrl } target={newTab ? '_blank' : '_self'}>
             <input type="hidden" name="items" value={ items } />
             <button
               type="submit"
@@ -194,7 +195,7 @@ export default class DomainSearch extends Component {
         }
 
         { error && <div className="rstore-error">Error: { error }</div> }
-        { (searching || submitting) && <div className="rstore-loading"></div> }
+        { (searching || submitting) && !newTab && <div className="rstore-loading"></div> }
         { results && <SearchResults results={ results } cartClick={ domain => this.handleSelectClick(domain) } text={ text }/> }
       </Fragment>
     );

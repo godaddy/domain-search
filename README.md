@@ -114,6 +114,9 @@ This app is open source! That means we want your contributions!
 3. Create pull-requests and help us make it better!
 
 ## Changelog
+  - v4.1.0
+    - Add open in new tab option
+
   - v3.1.0
     - Prevent page navigation when domains are selected
 

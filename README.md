@@ -25,18 +25,21 @@ You can view a demo of the domain search component at https://godaddy.github.io/
   - Please visit [https://www.secureserver.net/api/explore/](https://www.secureserver.net/api/explore/) for the official Storefront API documentation.
 
 ## Usage
+
 - Add the following HTML to the page that you want the domain search component to appear on. The compiled JS is located in `dist/index.js`.
 
 ```html
-<div class="rstore-domain-search" data-plid='1592'>Domain Search</div>
+<div class="rstore-domain-search" data-plid="1592">Domain Search</div>
 ```
 
 Optional parameter to change number of results returned in the search
+
 ```
 data-page_size="5"
 ```
 
 The domain search component is internationalizable. To change any of the strings, provide the following data attributes in the `div`
+
 ```
 data-text_placeholder="Find your perfect domain name"
 data-text_search="Search"
@@ -51,17 +54,22 @@ data-new_tab=true
 `data-text_available` and `data-text_not_available` fields support text substitution, {domain_name} in the provided text will be replaced by the actual domain name searched.
 
 Example Usage
+
 ```html
-<div class="rstore-domain-search" data-plid='1592'
-    data-text_placeholder="Find your perfect domain name"
-    data-text_search="Search"
-    data-text_available="Congrats, {domain_name} is available!"
-    data-text_not_available="Sorry, {domain_name} is taken."
-    data-text_cart="Continue to Cart"
-    data-text_select="Select"
-    data-text_selected="Selected"
-    data-new_tab=true
->Domain Search</div>
+<div
+  class="rstore-domain-search"
+  data-plid="1592"
+  data-text_placeholder="Find your perfect domain name"
+  data-text_search="Search"
+  data-text_available="Congrats, {domain_name} is available!"
+  data-text_not_available="Sorry, {domain_name} is taken."
+  data-text_cart="Continue to Cart"
+  data-text_select="Select"
+  data-text_selected="Selected"
+  data-new_tab="true"
+>
+  Domain Search
+</div>
 ```
 
 ## Browser Requirements
@@ -114,33 +122,41 @@ This app is open source! That means we want your contributions!
 3. Create pull-requests and help us make it better!
 
 ## Changelog
-  - v4.1.0
-    - Add open in new tab option
 
-  - v3.1.0
-    - Prevent page navigation when domains are selected
+- v4.1.0
 
-  - v3.0.0
-    - Update dependencies
-    - Update api calls
-    - Update CSS for responsive layout
-    - Add domain disclaimers
+  - Add open in new tab option
 
-  - v2.1.6
-    - Update api endpoint
+- v3.1.0
 
-  - v2.1.4
-    - Add continue to cart button
-    - Update UX 
+  - Prevent page navigation when domains are selected
 
-  - v2.1.3
-    - Include full domain on taken search results
-  
-  - v2.1.0
-    - Upgrade to React 16
-  
-  - v2.0.0 
-    - Initial Release
+- v3.0.0
+
+  - Update dependencies
+  - Update api calls
+  - Update CSS for responsive layout
+  - Add domain disclaimers
+
+- v2.1.6
+
+  - Update api endpoint
+
+- v2.1.4
+
+  - Add continue to cart button
+  - Update UX
+
+- v2.1.3
+
+  - Include full domain on taken search results
+
+- v2.1.0
+
+  - Upgrade to React 16
+
+- v2.0.0
+  - Initial Release
 
 ## Contributors
 

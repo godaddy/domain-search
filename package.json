@@ -2,7 +2,7 @@
   "name": "domain-search",
   "version": "4.0.2",
   "description": "React-based domain search widget used for designing and building custom GoDaddy reseller storefronts",
-  "main": "dist/index.js",
+  "main": "dist/build/static/js/bundle.min.js",
   "scripts": {
     "start": "react-scripts start",
     "build": "npm run build:react && npm run build:bundle",

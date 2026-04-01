@@ -38,13 +38,13 @@ export default class Domain extends Component {
       content = (
         <div className="rstore-message">
           { listPrice !== salePrice && <span className="listPrice"><small><s>{ listPrice }</s></small></span> }
-          <span className="salePrice"><strong>{ salePrice}{extendedValidation && '*' }</strong></span>
+          { salePrice && <span className="salePrice"><strong>{ salePrice}{extendedValidation && '*' }</strong></span> }
            <button className="rstore-domain-buy-button select btn btn-secondary" onClick={ ()=>cartClick(this) }>{ text.select }</button>
         </div>
       );
     }
 
-    if (domain && listPrice) {
+    if (domain) {
       return (
         <div className="domain-result">
           <div className="domain-name">

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import type { DomainResult, SearchResponse, WidgetConfig } from '../types';
 import { searchDomains } from '../util';
 import SearchResults from './SearchResults';
@@ -13,26 +13,12 @@ const DomainSearch: React.FC<Props> = ({ plid, baseUrl, pageSize, newTab, domain
   const [error, setError] = useState('');
   const [selectedDomains, setSelectedDomains] = useState<DomainResult[]>([]);
 
-  const cartFormRef = useRef<HTMLFormElement>(null);
-  const cartItemsRef = useRef<HTMLInputElement>(null);
-
   useEffect(() => {
     if (domainToCheck) {
       setDomain(domainToCheck);
       handleSearch(domainToCheck);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  useEffect(() => {
-    if (selectedDomains.length > 0) {
-      window.onbeforeunload = () => true;
-    } else {
-      window.onbeforeunload = null;
-    }
-    return () => {
-      window.onbeforeunload = null;
-    };
-  }, [selectedDomains]);
 
   const handleSearch = async (query: string) => {
     if (!query.trim()) return;
@@ -44,14 +30,10 @@ const DomainSearch: React.FC<Props> = ({ plid, baseUrl, pageSize, newTab, domain
 
     try {
       const data = await searchDomains(baseUrl, plid, query, pageSize);
-
-      if (data.error) {
-        setError(data.error.message);
-      } else {
-        setResults(data);
-      }
-    } catch {
-      setError('An error occurred. Please try again.');
+      setResults(data.exactMatchDomain ? data : null);
+      setError(data.error ? data.error.message : '');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred. Please try again.');
     } finally {
       setSearching(false);
     }
@@ -59,7 +41,7 @@ const DomainSearch: React.FC<Props> = ({ plid, baseUrl, pageSize, newTab, domain
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    handleSearch(domain);
+    if (domain.length > 0) handleSearch(domain);
   };
 
   const handleSelect = (domainResult: DomainResult) => {
@@ -70,74 +52,73 @@ const DomainSearch: React.FC<Props> = ({ plid, baseUrl, pageSize, newTab, domain
     );
   };
 
-  const handleContinue = () => {
-    if (!cartFormRef.current || !cartItemsRef.current) return;
+  const generateCartItems = (): string => {
+    if (!results) return JSON.stringify([]);
 
-    const items = selectedDomains.map((d) => ({ id: 'domain', domain: d.domain }));
-    cartItemsRef.current.value = JSON.stringify(items);
+    let domains: DomainResult[];
 
-    window.onbeforeunload = null;
-    setSubmitting(true);
-    cartFormRef.current.submit();
+    if (selectedDomains.length === 0 && results.exactMatchDomain.available) {
+      domains = [results.exactMatchDomain];
+    } else {
+      domains = selectedDomains;
+    }
+
+    return JSON.stringify(domains.map((d) => ({ id: 'domain', domain: d.domain })));
   };
 
+  const domainCount = selectedDomains.length;
+  const hasExactMatch = results?.exactMatchDomain?.available ?? false;
   const cartUrl = `https://www.${baseUrl}/api/v1/cart/${plid}/?redirect=true`;
 
+  window.onbeforeunload = () =>
+    !submitting && (hasExactMatch || domainCount > 0) ? '' : undefined;
+
   return (
-    <div>
+    <Fragment>
       <div className="form-container">
-        <form className="search-form" onSubmit={handleSubmit}>
+        <form className="search-form" onSubmit={handleSubmit} style={{ width: '100%' }}>
           <input
-            type="text"
-            className="rstore-domain-search-input"
+            type="search"
             value={domain}
             onChange={(e) => setDomain(e.target.value)}
+            className="search-field rstore-domain-search-input"
             placeholder={text.placeholder}
           />
-          <button type="submit" className="rstore-domain-search-button btn btn-primary">
-            {text.search}
-          </button>
+          <input
+            type="submit"
+            className="search-submit rstore-domain-search-button btn btn-primary"
+            disabled={searching || submitting}
+            value={text.search}
+          />
         </form>
       </div>
 
-      {searching && (
-        <div className="rstore-loading">
-          <img src="/loading.svg" alt="loading" />
-        </div>
+      {results && (
+        <form className="continue-form" method="POST" action={cartUrl} target={newTab ? '_blank' : '_self'}>
+          <input type="hidden" name="items" value={generateCartItems()} />
+          <button
+            type="submit"
+            className="rstore-domain-continue-button btn btn-secondary"
+            onClick={() => setSubmitting(true)}
+            disabled={domainCount === 0 && !hasExactMatch}
+          >
+            {text.cart}
+            {domainCount > 0 && ` (${domainCount} ${text.selected})`}
+          </button>
+        </form>
       )}
 
-      {error && <div className="rstore-error">{error}</div>}
-
-      {results && !searching && (
-        <>
-          <SearchResults
-            results={results}
-            selectedDomains={selectedDomains}
-            onSelect={handleSelect}
-            text={text}
-          />
-          {selectedDomains.length > 0 && (
-            <button
-              className="rstore-cart-button btn btn-primary"
-              onClick={handleContinue}
-              disabled={submitting}
-            >
-              {text.cart}
-            </button>
-          )}
-        </>
+      {error && <div className="rstore-error">Error: {error}</div>}
+      {(searching || submitting) && !newTab && <div className="rstore-loading" />}
+      {results && (
+        <SearchResults
+          results={results}
+          selectedDomains={selectedDomains}
+          onSelect={handleSelect}
+          text={text}
+        />
       )}
-
-      <form
-        ref={cartFormRef}
-        method="POST"
-        action={cartUrl}
-        target={newTab ? '_blank' : '_self'}
-        style={{ display: 'none' }}
-      >
-        <input ref={cartItemsRef} type="hidden" name="items" />
-      </form>
-    </div>
+    </Fragment>
   );
 };
 

@@ -20,7 +20,7 @@ You can view a demo of the domain search component at https://godaddy.github.io/
   - Add `[rstore_domain_search]` to any post or page that you would like this to appear in.
 - If using independently of WordPress (i.e. on your own custom storefront or site):
   - `npm i`
-  - Update the global `rstore` variable in `public/index.html` with your `pl_id`. You will need to replace all occurrences of the value `1592`, otherwise all cart actions will be applied to that `pl_id` instead of yours.
+  - Update the global `rstore` variable in `public/index.html` with your `pl_id`. You will need to replace all occurrences of the value `1592`, otherwise all cart actions will be applied to that `pl_id` instead of your own.
   - `npm start` - the app will run on port 3000 by default. Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
   - Please visit [https://www.secureserver.net/api/explore/](https://www.secureserver.net/api/explore/) for the official Storefront API documentation.
 

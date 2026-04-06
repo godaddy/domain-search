@@ -24,7 +24,7 @@ jobs:
         run: npm ci
 
       - name: Run tests
-        run: npm test -- --watchAll=false
+        run: npm test
 
       - name: Build
         run: npm run build
@@ -37,9 +37,6 @@ jobs:
             echo "::error::Tag v$TAG_VERSION doesn't match package.json version $PKG_VERSION"
             exit 1
           fi
-
-      - name: Update npm
-        run: npm install -g npm@latest
 
       - name: Publish to npm
         run: npm publish --provenance --access public

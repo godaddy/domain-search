@@ -14,7 +14,7 @@ const SearchResults = ({ results, cartClick, plid, text, baseUrl }) => {
     <div className="result-content">
       <ExactDomain domainResult={ exactMatchDomain } text={ text } />
       <div className="rstore-exact-domain-list">
-        <Domain domainResult={ exactMatchDomain } text={ text } cartClick={ cartClick }/>
+        { exactMatchDomain.available && <Domain domainResult={ exactMatchDomain } text={ text } cartClick={ cartClick }/> }
       </div>
       <div className="rstore-domain-list">
         { suggestedDomains && suggestedDomains.map((domainResult, index) => {

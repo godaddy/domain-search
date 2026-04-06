@@ -20,10 +20,6 @@
   },
   "homepage": "https://godaddy.github.io/domain-search",
   "author": "GoDaddy.com Operating Company, LLC",
-  "contributors": [
-    "Chris Beresford <cberesford@godaddy.com>",
-    "Bryan Focht <bxfocht@godaddy.com>"
-  ],
   "keywords": [
     "domains",
     "domain search",

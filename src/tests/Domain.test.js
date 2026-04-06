@@ -35,6 +35,23 @@ describe('Domain', () => {
     shallow(<Domain {...newProps} />);
   });
 
+  it('should render Domain component with select button when listPrice is missing', () => {
+    const newProps = {
+      ...props,
+      domainResult: {
+        domain: 'codetrappers.ai',
+        available: true,
+        productId: 1303307
+      }
+    };
+
+    const wrapper = shallow(<Domain {...newProps} />);
+
+    expect(wrapper.find('.domain-result')).toHaveLength(1);
+    expect(wrapper.find('.rstore-domain-buy-button.select')).toHaveLength(1);
+    expect(wrapper.find('.salePrice')).toHaveLength(0);
+  });
+
   it('should successfully add when domain is selected', () => {
     const wrapper = mount(<Domain {...props} />);
 

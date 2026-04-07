@@ -11,11 +11,12 @@ export default defineConfig({
       fileName: (format) => `domain-search.${format}.js`
     },
     rollupOptions: {
-      external: ['react', 'react-dom'],
+      external: [/^react($|\/)/, /^react-dom($|\/)/],
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM'
+        globals: (id: string): string => {
+          if (id === 'react' || id.startsWith('react/')) return 'React';
+          if (id === 'react-dom' || id.startsWith('react-dom/')) return 'ReactDOM';
+          return id;
         }
       }
     }

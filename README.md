@@ -1,6 +1,6 @@
 # Domain Search
 
-[![Tests](https://github.com/godaddy/domain-search/actions/workflows/test.yml/badge.svg)](https://github.com/godaddy/domain-search/actions/workflows/test.yml)
+[![Tests](https://github.com/godaddy/domain-search/actions/workflows/ci.yml/badge.svg)](https://github.com/godaddy/domain-search/actions/workflows/ci.yml)
 [![npm version](https://img.shields.io/npm/v/domain-search.svg)](https://www.npmjs.com/package/domain-search)
 
 This is a React-based domain search widget used for designing and building custom GoDaddy reseller storefronts, as seen in our [WordPress Storefront Plugin](https://github.com/godaddy/wp-reseller-store).

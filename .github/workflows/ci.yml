@@ -1,12 +1,12 @@
-name: Test
+name: CI
 
 on:
   pull_request:
     branches: [master]
 
 jobs:
-  test:
-    name: Run Tests
+  ci:
+    name: Test and Build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,3 +21,6 @@ jobs:
 
       - name: Run tests
         run: npm test
+
+      - name: Build
+        run: npm run build

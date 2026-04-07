@@ -11,7 +11,7 @@ interface Props {
 const Domain: React.FC<Props> = ({ domainResult, text, selected, onSelect }) => {
   const { domain, listPrice, salePrice, extendedValidation, disclaimer } = domainResult;
 
-  if (!domain) return <div />;
+  if (!domain) return null;
 
   return (
     <div className="domain-result">

@@ -74,9 +74,9 @@ describe('Domain', () => {
     expect(onSelect).toHaveBeenCalledOnce();
   });
 
-  it('renders empty div when domain is missing', () => {
+  it('renders nothing when domain is missing', () => {
     const emptyDomain: DomainResult = { domain: '', available: false };
     const { container } = render(<Domain domainResult={emptyDomain} text={text} selected={false} onSelect={vi.fn()} />);
-    expect(container.firstChild).toBeEmptyDOMElement();
+    expect(container.firstChild).toBeNull();
   });
 });

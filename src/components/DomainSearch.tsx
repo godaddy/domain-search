@@ -13,6 +13,19 @@ const DomainSearch: React.FC<Props> = ({ plid, baseUrl, pageSize, newTab, domain
   const [error, setError] = useState('');
   const [selectedDomains, setSelectedDomains] = useState<DomainResult[]>([]);
 
+  const domainCount = selectedDomains.length;
+  const hasExactMatch = results?.exactMatchDomain?.available ?? false;
+
+  useEffect(() => {
+    const handler = (e: BeforeUnloadEvent) => {
+      if (!submitting && (hasExactMatch || domainCount > 0)) {
+        e.preventDefault();
+      }
+    };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [submitting, hasExactMatch, domainCount]);
+
   useEffect(() => {
     if (domainToCheck) {
       setDomain(domainToCheck);
@@ -66,12 +79,7 @@ const DomainSearch: React.FC<Props> = ({ plid, baseUrl, pageSize, newTab, domain
     return JSON.stringify(domains.map((d) => ({ id: 'domain', domain: d.domain })));
   };
 
-  const domainCount = selectedDomains.length;
-  const hasExactMatch = results?.exactMatchDomain?.available ?? false;
   const cartUrl = `https://www.${baseUrl}/api/v1/cart/${plid}/?redirect=true`;
-
-  window.onbeforeunload = () =>
-    !submitting && (hasExactMatch || domainCount > 0) ? '' : undefined;
 
   return (
     <Fragment>

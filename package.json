@@ -1,6 +1,6 @@
 {
   "name": "domain-search",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "React-based domain search widget used for designing and building custom GoDaddy reseller storefronts",
   "main": "dist/domain-search.umd.js",
   "module": "dist/domain-search.es.js",
@@ -18,7 +18,7 @@
     "dev": "vite",
     "build": "vite build && tsc --emitDeclarationOnly --declaration --outDir dist",
     "build:demo": "vite build --config vite.demo.config.ts",
-"test": "vitest run",
+    "test": "vitest run",
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest",
     "lint": "tsc --noEmit"
@@ -53,7 +53,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "typescript": "^5.4.5",
-"vite": "^8.0.5",
+    "vite": "^8.0.5",
     "vitest": "^4.1.2"
   }
 }

@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({ jsxRuntime: 'classic' })],
   build: {
     lib: {
       entry: 'src/index.ts',
@@ -11,18 +11,10 @@ export default defineConfig({
       fileName: (format) => `domain-search.${format}.js`
     },
     rollupOptions: {
-      external: [
-        'react',
-        'react/jsx-runtime',
-        'react/jsx-dev-runtime',
-        'react-dom',
-        'react-dom/client'
-      ],
+      external: ['react', 'react-dom', 'react-dom/client'],
       output: {
         globals: {
           'react': 'React',
-          'react/jsx-runtime': 'React',
-          'react/jsx-dev-runtime': 'React',
           'react-dom': 'ReactDOM',
           'react-dom/client': 'ReactDOM'
         }

@@ -2,7 +2,7 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [react({ jsxRuntime: 'classic' })],
   build: {
     lib: {
       entry: 'src/index.ts',
@@ -11,12 +11,12 @@ export default defineConfig({
       fileName: (format) => `domain-search.${format}.js`
     },
     rollupOptions: {
-      external: [/^react($|\/)/, /^react-dom($|\/)/],
+      external: ['react', 'react-dom', 'react-dom/client'],
       output: {
-        globals: (id: string): string => {
-          if (id === 'react' || id.startsWith('react/')) return 'React';
-          if (id === 'react-dom' || id.startsWith('react-dom/')) return 'ReactDOM';
-          return id;
+        globals: {
+          'react': 'React',
+          'react-dom': 'ReactDOM',
+          'react-dom/client': 'ReactDOM'
         }
       }
     }

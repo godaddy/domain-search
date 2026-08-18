@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from 'react';
 import type { DomainResult, SearchResponse, WidgetConfig } from '../types';
-import { searchDomains } from '../util';
+import { addDomainToCart, searchDomains } from '../util';
 import SearchResults from './SearchResults';
 
 interface Props extends WidgetConfig {}
@@ -65,21 +65,41 @@ const DomainSearch: React.FC<Props> = ({ plid, baseUrl, pageSize, newTab, domain
     );
   };
 
-  const generateCartItems = (): string => {
-    if (!results) return JSON.stringify([]);
-
-    let domains: DomainResult[];
+  const getDomainsToAdd = (): DomainResult[] => {
+    if (!results) return [];
 
     if (selectedDomains.length === 0 && results.exactMatchDomain.available) {
-      domains = [results.exactMatchDomain];
-    } else {
-      domains = selectedDomains;
+      return [results.exactMatchDomain];
     }
 
-    return JSON.stringify(domains.map((d) => ({ id: 'domain', domain: d.domain })));
+    return selectedDomains;
   };
 
-  const cartUrl = `https://www.${baseUrl}/api/v1/cart/${plid}/?redirect=true`;
+  const handleAddToCart = async () => {
+    const domainsToAdd = getDomainsToAdd();
+    if (domainsToAdd.length === 0) return;
+
+    setSubmitting(true);
+    setError('');
+
+    try {
+      let nextStepUrl = '';
+
+      for (const d of domainsToAdd) {
+        const data = await addDomainToCart(baseUrl, plid, d.domain);
+        nextStepUrl = data.nextStepUrl;
+      }
+
+      if (newTab) {
+        window.open(nextStepUrl, '_blank');
+      } else {
+        window.location.href = nextStepUrl;
+      }
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'An error occurred. Please try again.');
+      setSubmitting(false);
+    }
+  };
 
   return (
     <Fragment>
@@ -102,18 +122,17 @@ const DomainSearch: React.FC<Props> = ({ plid, baseUrl, pageSize, newTab, domain
       </div>
 
       {results && (
-        <form className="continue-form" method="POST" action={cartUrl} target={newTab ? '_blank' : '_self'}>
-          <input type="hidden" name="items" value={generateCartItems()} />
+        <div className="continue-form">
           <button
-            type="submit"
+            type="button"
             className="rstore-domain-continue-button btn btn-secondary"
-            onClick={() => setSubmitting(true)}
-            disabled={domainCount === 0 && !hasExactMatch}
+            onClick={handleAddToCart}
+            disabled={(domainCount === 0 && !hasExactMatch) || submitting}
           >
             {text.cart}
             {domainCount > 0 && ` (${domainCount} ${text.selected})`}
           </button>
-        </form>
+        </div>
       )}
 
       {error && <div className="rstore-error">Error: {error}</div>}

@@ -15,6 +15,12 @@ export interface SearchResponse {
   error?: { message: string };
 }
 
+export interface CartResponse {
+  cartCount: number;
+  nextStepUrl: string;
+  error?: { message: string; name?: string };
+}
+
 export interface WidgetText {
   placeholder: string;
   search: string;
